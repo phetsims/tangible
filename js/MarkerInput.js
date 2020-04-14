@@ -11,26 +11,32 @@ import timer from '../../axon/js/timer.js';
 
 class MarkerInput {
 
+  constructor() {
+
+    // @protected (read-only) {Mechamarkers} - instead of using the global, this allows to keep encapsulation better.
+    this.Mechamarkers = window.Mechamarkers;
+  }
+
   /**
+   * Must be called to begin Mechamarkers input. This function wires up to listen to when Mechamarkers updates
+   * @public
+   *
    * @param {function(Mechamarkers)} updateFunction
    */
-  static init( updateFunction ) {
+  beginInput( updateFunction ) {
 
-    function update() {
+    timer.addListener( () => {
 
       // Mechamarkers stuff
-      window.Mechamarkers.update( Date.now() );
+      this.Mechamarkers.update( Date.now() );
 
-      updateFunction( window.Mechamarkers );
-
-    }
-
-    timer.addListener( update );
+      updateFunction( this.Mechamarkers );
+    } );
 
     const canvas = document.createElement( 'canvas' );
     const ctx = canvas.getContext( '2d' );
     document.body.appendChild( canvas );
-    window.Mechamarkers.init( canvas, ctx );
+    this.Mechamarkers.init( canvas, ctx );
   }
 }
 
