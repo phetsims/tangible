@@ -12,6 +12,7 @@
  */
 
 // modules
+import Features from '../../scenery/js/util/Features.js';
 import tangible from './tangible.js';
 import timer from '../../axon/js/timer.js';
 
@@ -36,7 +37,7 @@ class MarkerInput {
       } );
 
       const canvas = document.createElement( 'canvas' );
-      canvas.style = '-webkit-user-select: none;';
+      canvas.style[ Features.userSelect ] = 'none';
       const ctx = canvas.getContext( '2d' );
       document.body.appendChild( canvas );
       this.Mechamarkers.init( canvas, ctx );
