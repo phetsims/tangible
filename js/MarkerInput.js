@@ -37,13 +37,13 @@ class MarkerInput {
       } );
 
       const canvas = document.createElement( 'canvas' );
-      canvas.style[ Features.userSelect ] = 'none';
 
-      // push it off screen so that it cannot be selected on Safari, see
+      // push it off screen and disable user input so that it cannot be selected on Safari, see
       // https://github.com/phetsims/ratio-and-proportion/issues/39
       canvas.style.position = 'absolute';
       canvas.style.left = '-10000px';
       canvas.style.right = '-10000px';
+      canvas.style[ Features.userSelect ] = 'none';
 
       const ctx = canvas.getContext( '2d' );
       document.body.appendChild( canvas );
