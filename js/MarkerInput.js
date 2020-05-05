@@ -36,6 +36,7 @@ class MarkerInput {
       } );
 
       const canvas = document.createElement( 'canvas' );
+      canvas.style = '-webkit-user-select: none;';
       const ctx = canvas.getContext( '2d' );
       document.body.appendChild( canvas );
       this.Mechamarkers.init( canvas, ctx );
