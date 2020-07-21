@@ -6,8 +6,8 @@
  */
 
 // modules
-import tangible from './tangible.js';
 import merge from '../../phet-core/js/merge.js';
+import tangible from './tangible.js';
 
 class SliderGroupMarker {
 
@@ -48,6 +48,7 @@ class SliderGroupMarker {
    * @public
    */
   update() {
+    assert && assert( window.hasOwnProperty( 'Mechamarkers' ), 'Mechamarkers should exist as a global' );
     const group = window.Mechamarkers.getGroup( this.inputGroup );
     if ( group && group.anchor.present ) {
       const value = group.getInput( this.inputName ).val;

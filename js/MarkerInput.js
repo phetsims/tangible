@@ -12,9 +12,10 @@
  */
 
 // modules
-import Features from '../../scenery/js/util/Features.js';
-import tangible from './tangible.js';
 import timer from '../../axon/js/timer.js';
+import Features from '../../scenery/js/util/Features.js';
+import '../../sherpa/lib/mechamarkers-21f16221e414ec2dca68bbfbb866369eea7abd70.js';
+import tangible from './tangible.js';
 
 // This flag keeps Mechamarkers from being implemented more than once.
 let mechamarkersInitialized = false;
