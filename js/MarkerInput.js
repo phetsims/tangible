@@ -12,7 +12,7 @@
  */
 
 // modules
-import timer from '../../axon/js/timer.js';
+import stepTimer from '../../axon/js/stepTimer.js';
 import Features from '../../scenery/js/util/Features.js';
 import '../../sherpa/lib/mechamarkers-21f16221e414ec2dca68bbfbb866369eea7abd70.js';
 import tangible from './tangible.js';
@@ -31,7 +31,7 @@ class MarkerInput {
     // do it again.
     if ( !mechamarkersInitialized ) {
 
-      timer.addListener( () => {
+      stepTimer.addListener( () => {
 
         // Mechamarkers stuff
         this.Mechamarkers.update( Date.now() );
