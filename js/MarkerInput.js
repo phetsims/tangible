@@ -13,7 +13,6 @@
 
 // modules
 import stepTimer from '../../axon/js/stepTimer.js';
-import '../../sherpa/lib/beholder-detection-1.1.10.js';
 import tangible from './tangible.js';
 
 // This flag keeps Mechamarkers from being implemented more than once.
@@ -51,6 +50,7 @@ class MarkerInput {
 
     // @protected (read-only) {Beholder} - instead of using the global, this allows to keep encapsulation better.
     this.Beholder = window[ 'beholder-detection' ];
+    assert && assert( this.Beholder, 'Beholder global is needed to run tangible input.' );
 
     // the Mechamarkers library only needs to be initialized once. If another instance has already done this, then don't
     // do it again.
