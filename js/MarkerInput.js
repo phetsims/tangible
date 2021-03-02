@@ -39,7 +39,7 @@ const beholderInitParameters = {
     flip: false
   },
   overlay_params: {
-    present: true, // Determines if the Beholder overlay will display or be invisible entirely via display: none
+    present: false, // Determines if the Beholder overlay will display or be invisible entirely via display: none
     hide: true // Determines if the overlay should be hidden on the left of the screen or visible
   }
 };
@@ -56,18 +56,10 @@ class MarkerInput {
     // do it again.
     if ( !mechamarkersInitialized ) {
 
-      let overlayHidden = false;
-
       stepTimer.addListener( () => {
 
         // Mechamarkers stuff
         this.Beholder.update( Date.now() );
-
-        // TODO: this is only temporary until we can hide this through the library, https://github.com/phetsims/tangible/issues/5
-        if ( !overlayHidden ) {
-          document.getElementById( 'beholder-overlay' ).style.display = 'none';
-          overlayHidden = true;
-        }
       } );
 
       const div = document.createElement( 'div' );
