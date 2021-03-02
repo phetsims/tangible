@@ -13,42 +13,67 @@
 
 // modules
 import stepTimer from '../../axon/js/stepTimer.js';
-import Features from '../../scenery/js/util/Features.js';
-import '../../sherpa/lib/mechamarkers-21f16221e414ec2dca68bbfbb866369eea7abd70.js';
+import '../../sherpa/lib/beholder-detection-1.1.10.js';
 import tangible from './tangible.js';
 
 // This flag keeps Mechamarkers from being implemented more than once.
 let mechamarkersInitialized = false;
 
+const beholderInitParameters = {
+  camera_params: {
+    videoSize: 1, // The video size values map to the following [320 x 240, 640 x 480, 1280 x 720, 1920 x 1080]
+    rearCamera: false, // Boolean value for defaulting to the rear facing camera. Only works on mobile
+    torch: false // Boolean value for if torch/flashlight is on. Only works for rear facing mobile cameras. Can only be set from init
+  },
+  detection_params: {
+    minMarkerDistance: 10,
+    minMarkerPerimeter: 0.1, // This was nice for @zepumph with basic testing
+    maxMarkerPerimeter: 0.8,
+    sizeAfterPerspectiveRemoval: 49
+  },
+  feed_params: {
+    contrast: 0,
+    brightness: 0,
+    grayscale: 100, // @zepumph: wouldn't this help detect?
+
+    // Note: When true, many aruco original markers are not detected well!x
+    flip: false
+  },
+  overlay_params: {
+    present: true, // Determines if the Beholder overlay will display or be invisible entirely via display: none
+    hide: true // Determines if the overlay should be hidden on the left of the screen or visible
+  }
+};
+
 class MarkerInput {
 
   constructor() {
 
-    // @protected (read-only) {Mechamarkers} - instead of using the global, this allows to keep encapsulation better.
-    this.Mechamarkers = window.Mechamarkers;
+    // @protected (read-only) {Beholder} - instead of using the global, this allows to keep encapsulation better.
+    this.Beholder = window[ 'beholder-detection' ];
 
     // the Mechamarkers library only needs to be initialized once. If another instance has already done this, then don't
     // do it again.
     if ( !mechamarkersInitialized ) {
 
+      let overlayHidden = false;
+
       stepTimer.addListener( () => {
 
         // Mechamarkers stuff
-        this.Mechamarkers.update( Date.now() );
+        this.Beholder.update( Date.now() );
+
+        // TODO: this is only temporary until we can hide this through the library, https://github.com/phetsims/tangible/issues/5
+        if ( !overlayHidden ) {
+          document.getElementById( 'beholder-overlay' ).style.display = 'none';
+          overlayHidden = true;
+        }
       } );
 
-      const canvas = document.createElement( 'canvas' );
+      const div = document.createElement( 'div' );
+      document.body.appendChild( div );
 
-      // push it off screen and disable user input so that it cannot be selected on Safari, see
-      // https://github.com/phetsims/ratio-and-proportion/issues/39
-      canvas.style.position = 'absolute';
-      canvas.style.left = '-10000px';
-      canvas.style.right = '-10000px';
-      canvas.style[ Features.userSelect ] = 'none';
-
-      const ctx = canvas.getContext( '2d' );
-      document.body.appendChild( canvas );
-      this.Mechamarkers.init( canvas, ctx );
+      this.Beholder.init( div, beholderInitParameters );
 
       mechamarkersInitialized = true;
     }
