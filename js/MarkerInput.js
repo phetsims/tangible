@@ -31,7 +31,7 @@ const beholderInitParameters = {
     sizeAfterPerspectiveRemoval: 49
   },
   feed_params: {
-    contrast: 0,
+    contrast: 100,
     brightness: 0,
     grayscale: 100, // @zepumph: wouldn't this help detect?
 
