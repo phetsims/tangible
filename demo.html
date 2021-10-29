@@ -39,7 +39,11 @@
     // Mechamarkers stuff
     Beholder.update( Date.now() );
 
-    console.log( Beholder.getAllMarkers().filter( x => x.present ) );
+    const markers = Beholder.getAllMarkers().filter( x => x.present );
+
+    if ( markers.length > 0 ) {
+      console.log( markers );
+    }
   }, 10 );
 
   const div = document.createElement( 'div' );
