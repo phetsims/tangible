@@ -7,6 +7,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import tangible from '../tangible.js';
+import asyncLoader from '../../../phet-core/js/asyncLoader.js';
 
 let initialized = false;
 
@@ -28,49 +29,75 @@ class MediaPipe {
   // the most recent results from MediaPipe
   static results: MediaPipeResults;
 
-  constructor() {
-
-    if ( !initialized ) {
-      MediaPipe.initialize();
-    }
-  }
-
+  /**
+   * @private (MediaPipe)
+   * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
+   * Stores results of tracking to MediaPipe.results.
+   */
   static initialize() {
     assert && assert( !initialized );
+    assert && assert( document.body, 'a document body is needed to attache imported scripts' );
 
-    const videoElement = document.getElementsByClassName( 'input_video' )[ 0 ];
+    const videoElement = document.createElement( 'video' );
+    document.body.appendChild( videoElement );
 
-    assert && assert( videoElement );
+    const mediaPipeResourcesToLoad = [
+      'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
+      'https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js',
+      'https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js',
+      'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js'
+    ];
 
-    // @ts-ignore
-    const hands = new window.Hands( {
-      locateFile: ( file: string ) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-      }
+    const unlock = asyncLoader.createLock( mediaPipeResourcesToLoad );
+
+    let loaded = 0;
+
+    mediaPipeResourcesToLoad.forEach( src => {
+      const script = document.createElement( 'script' );
+      script.setAttribute( 'crossorigin', 'anonymous' );
+      script.src = src;
+      document.body.appendChild( script );
+      script.addEventListener( 'load', () => {
+        loaded++;
+        if ( loaded === mediaPipeResourcesToLoad.length ) {
+          let unlocked = false;
+
+          // @ts-ignore
+          const hands = new window.Hands( {
+            locateFile: ( file: string ) => {
+              return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+            }
+          } );
+          hands.setOptions( {
+            maxNumHands: 2,
+            modelComplexity: 1,
+            minDetectionConfidence: 0.2,
+            minTrackingConfidence: 0.2
+          } );
+          hands.onResults( ( results: MediaPipeResults ) => {
+            !unlocked && unlock();
+            unlocked = true;
+            MediaPipe.results = results;
+          } );
+
+          // @ts-ignore
+          const camera = new window.Camera( videoElement, {
+            onFrame: async () => {
+              await hands.send( { image: videoElement } );
+            },
+            width: 1280,
+            height: 720
+          } );
+          camera.start();
+
+          initialized = true;
+        }
+      } );
     } );
-    hands.setOptions( {
-      maxNumHands: 2,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.2,
-      minTrackingConfidence: 0.2
-    } );
-    hands.onResults( ( results: MediaPipeResults ) => {
-      MediaPipe.results = results;
-    } );
-
-    // @ts-ignore
-    const camera = new window.Camera( videoElement, {
-      onFrame: async () => {
-        await hands.send( { image: videoElement } );
-      },
-      width: 1280,
-      height: 720
-    } );
-    camera.start();
-
-    initialized = true;
   }
 }
+
+MediaPipe.initialize();
 
 tangible.register( 'MediaPipe', MediaPipe );
 export default MediaPipe;
