@@ -41,7 +41,7 @@ type MediaPipeInitializeOptions = {
 
 export type MediaPipeResults = {
 
-  // Array of length 21, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
+  // Array of length 21 for each , see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
   multiHandLandmarks: Array<[ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ]>
 }
 
