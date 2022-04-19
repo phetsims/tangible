@@ -65,7 +65,7 @@ class MediaPipe {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
 
-    const options = optionize<MediaPipeInitializeOptions>( {
+    const options = optionize<MediaPipeInitializeOptions>()( {
       maxNumHands: 2,
       modelComplexity: 1,
       minDetectionConfidence: 0.2,
