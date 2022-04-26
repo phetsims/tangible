@@ -4,6 +4,9 @@
  * Adds the boilerplate needed for MediaPipe "hands" implementation to run in PhET Sims. See https://github.com/phetsims/ratio-and-proportion/issues/431
  * See https://google.github.io/mediapipe/solutions/hands.html
  *
+ *
+ * TODO: lock in URLs like     `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands_solution_wasm_bin.wasm`
+ *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import tangible from '../tangible.js';
@@ -111,9 +114,14 @@ class MediaPipe {
           let unlocked = false;
 
           // @ts-ignore
+          const mediaPipeDependencies = window.mediaPipeDependencies;
+          assert && assert( mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
+
+          // @ts-ignore
           const hands = new window.Hands( {
             locateFile: ( file: string ) => {
-              return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+              assert && assert( mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
+              return mediaPipeDependencies[ file ];
             }
           } );
           hands.setOptions( options );
