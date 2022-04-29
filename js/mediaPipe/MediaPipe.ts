@@ -64,7 +64,7 @@ class MediaPipe {
    * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
    * Stores results of tracking to MediaPipe.results.
    */
-  static initialize( providedOptions?: MediaPipeInitializeOptions ) {
+  static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
 
