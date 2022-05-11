@@ -12,8 +12,14 @@
 import tangible from '../tangible.js';
 import asyncLoader from '../../../phet-core/js/asyncLoader.js';
 import optionize from '../../../phet-core/js/optionize.js';
+import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
+import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
+import Property from '../../../axon/js/Property.js';
 import MediaPipeQueryParameters from './MediaPipeQueryParameters.js';
 import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import NullableIO from '../../../tandem/js/types/NullableIO.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.mediaPipe, '?showVideo is expected to accompany ?mediaPipe and its features' );
@@ -55,10 +61,25 @@ export type MediaPipeResults = {
   multiHandLandmarks: Array<[ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ]>;
 }
 
+const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
+  isValidValue: () => true,
+  toStateObject: ( mediaPipeResults: any ) => {
+    return {
+      multiHandLandmarks: mediaPipeResults.multiHandLandmarks
+    };
+  },
+  stateSchema: {
+    multiHandLandmarks: ArrayIO( ArrayIO( ObjectLiteralIO ) )
+  }
+} );
+
 class MediaPipe {
 
   // the most recent results from MediaPipe
-  static results: MediaPipeResults;
+  static resultsProperty = new Property<MediaPipeResults | null>( null, {
+    phetioType: Property.PropertyIO( NullableIO( MediaPipeResultsIO ) ),
+    tandem: Tandem.GLOBAL_VIEW.createTandem( 'resultsProperty' )
+  } );
 
   /**
    * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
@@ -128,7 +149,7 @@ class MediaPipe {
           hands.onResults( ( results: MediaPipeResults ) => {
             !unlocked && unlock();
             unlocked = true;
-            MediaPipe.results = results;
+            MediaPipe.resultsProperty.value = results;
 
             // Update the image if displaying the canvas video over the phetsim.
             if ( MediaPipeQueryParameters.showVideo ) {
