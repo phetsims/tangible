@@ -10,7 +10,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import tangible from '../tangible.js';
-import asyncLoader from '../../../phet-core/js/asyncLoader.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
@@ -126,66 +125,40 @@ class MediaPipe {
       document.body.appendChild( element );
     }
 
-    const mediaPipeResourcesToLoad = [
-      'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
-      'https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js',
-      'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js'
-    ];
+    // @ts-ignore
+    const mediaPipeDependencies = window.mediaPipeDependencies;
+    assert && assert( mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
 
-    const unlock = asyncLoader.createLock( mediaPipeResourcesToLoad );
-
-    let loaded = 0;
-
-    mediaPipeResourcesToLoad.forEach( src => {
-      const script = document.createElement( 'script' );
-      script.setAttribute( 'crossorigin', 'anonymous' );
-      script.src = src;
-      document.body.appendChild( script );
-      script.addEventListener( 'load', () => {
-        loaded++;
-        if ( loaded === mediaPipeResourcesToLoad.length ) {
-          let unlocked = false;
-
-          // @ts-ignore
-          const mediaPipeDependencies = window.mediaPipeDependencies;
-          assert && assert( mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
-
-          // @ts-ignore
-          const hands = new window.Hands( {
-            locateFile: ( file: string ) => {
-              assert && assert( mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
-              return mediaPipeDependencies[ file ];
-            }
-          } );
-          hands.setOptions( options );
-          hands.onResults( ( results: MediaPipeResults ) => {
-            !unlocked && unlock();
-            unlocked = true;
-
-            MediaPipe.resultsProperty.value = results.multiHandLandmarks.length > 0 ? results : null;
-
-            // Update the image if displaying the canvas video over the phetsim.
-            if ( MediaPipeQueryParameters.showVideo ) {
-              MediaPipe.drawToCanvas( canvasElement!, canvasContext!, results.image );
-            }
-          } );
-
-          // @ts-ignore
-          const camera = new window.Camera( videoElement, {
-            onFrame: async () => {
-              await hands.send( { image: videoElement } );
-            },
-            width: 1280,
-            height: 720
-          } );
-          camera.start();
-
-          initialized = true;
-        }
-      } );
+    // @ts-ignore
+    const hands = new window.Hands( {
+      locateFile: ( file: string ) => {
+        assert && assert( mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
+        return mediaPipeDependencies[ file ];
+      }
     } );
-  }
+    hands.setOptions( options );
+    hands.onResults( ( results: MediaPipeResults ) => {
 
+      MediaPipe.resultsProperty.value = results.multiHandLandmarks.length > 0 ? results : null;
+
+      // Update the image if displaying the canvas video over the phetsim.
+      if ( MediaPipeQueryParameters.showVideo ) {
+        MediaPipe.drawToCanvas( canvasElement!, canvasContext!, results.image );
+      }
+    } );
+
+    // @ts-ignore
+    const camera = new window.Camera( videoElement, {
+      onFrame: async () => {
+        await hands.send( { image: videoElement } );
+      },
+      width: 1280,
+      height: 720
+    } );
+    camera.start();
+
+    initialized = true;
+  }
 
   /**
    * Update the canvas to the current image
