@@ -129,7 +129,6 @@ class MediaPipe {
     const mediaPipeResourcesToLoad = [
       'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
       'https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js',
-      'https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js',
       'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js'
     ];
 
