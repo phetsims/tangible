@@ -54,22 +54,34 @@ type MediaPipeInitializeOptions = {
   minTrackingConfidence?: number;
 }
 
+// 21 points, in order, cooresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
+type HandLandmarks = [ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ];
+
+type HandednessData = {
+  displayName?: string;
+  index: number;
+  label: string;
+  score: number;
+}
 export type MediaPipeResults = {
   image: HTMLCanvasElement;
 
-  // Array of length 21 for each , see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
-  multiHandLandmarks: Array<[ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ]>;
+  // One for each hand detected
+  multiHandLandmarks: HandLandmarks[];
+  multiHandedness: HandednessData[];
 }
 
 const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
   isValidValue: () => true,
   toStateObject: ( mediaPipeResults: any ) => {
     return {
-      multiHandLandmarks: mediaPipeResults.multiHandLandmarks
+      multiHandLandmarks: mediaPipeResults.multiHandLandmarks,
+      multiHandedness: mediaPipeResults.multiHandedness
     };
   },
   stateSchema: {
-    multiHandLandmarks: ArrayIO( ArrayIO( ObjectLiteralIO ) )
+    multiHandLandmarks: ArrayIO( ArrayIO( ObjectLiteralIO ) ),
+    multiHandedness: ArrayIO( ObjectLiteralIO )
   }
 } );
 
@@ -78,7 +90,8 @@ class MediaPipe {
   // the most recent results from MediaPipe
   static resultsProperty = new Property<MediaPipeResults | null>( null, {
     phetioType: Property.PropertyIO( NullableIO( MediaPipeResultsIO ) ),
-    tandem: Tandem.GLOBAL_VIEW.createTandem( 'resultsProperty' )
+    tandem: Tandem.GLOBAL_VIEW.createTandem( 'mediaPipe' ).createTandem( 'resultsProperty' ),
+    phetioDocumentation: 'A Property that holds the raw data coming from MediaPipe. Set to null if there are no hands detected.'
   } );
 
   /**
@@ -149,7 +162,8 @@ class MediaPipe {
           hands.onResults( ( results: MediaPipeResults ) => {
             !unlocked && unlock();
             unlocked = true;
-            MediaPipe.resultsProperty.value = results;
+
+            MediaPipe.resultsProperty.value = results.multiHandLandmarks.length > 0 ? results : null;
 
             // Update the image if displaying the canvas video over the phetsim.
             if ( MediaPipeQueryParameters.showVideo ) {
