@@ -72,7 +72,7 @@ export type MediaPipeResults = {
 
 const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
   isValidValue: () => true,
-  toStateObject: ( mediaPipeResults: any ) => {
+  toStateObject: ( mediaPipeResults: MediaPipeResults ) => {
     return {
       multiHandLandmarks: mediaPipeResults.multiHandLandmarks,
       multiHandedness: mediaPipeResults.multiHandedness

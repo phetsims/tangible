@@ -184,7 +184,7 @@ const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
 
       window.addEventListener( 'pointermove', pointermove, CAPTURE );
       window.addEventListener( 'pointerup', pointerup, CAPTURE );
-    } ) as any, CAPTURE );
+    } ) as EventListener, CAPTURE ); // eslint-disable-line
   } );
 
 
