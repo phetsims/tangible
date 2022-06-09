@@ -87,7 +87,7 @@ const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
 class MediaPipe {
 
   // the most recent results from MediaPipe
-  static resultsProperty = new Property<MediaPipeResults | null>( null, {
+  public static resultsProperty = new Property<MediaPipeResults | null>( null, {
     phetioType: Property.PropertyIO( NullableIO( MediaPipeResultsIO ) ),
     tandem: Tandem.GLOBAL_VIEW.createTandem( 'mediaPipe' ).createTandem( 'resultsProperty' ),
     phetioDocumentation: 'A Property that holds the raw data coming from MediaPipe. Set to null if there are no hands detected.'
@@ -97,7 +97,7 @@ class MediaPipe {
    * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
    * Stores results of tracking to MediaPipe.results.
    */
-  static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
+  public static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
 
@@ -163,7 +163,7 @@ class MediaPipe {
   /**
    * Update the canvas to the current image
    */
-  static drawToCanvas( canvasElement: HTMLCanvasElement, canvasContext: CanvasRenderingContext2D, image: HTMLCanvasElement ): void {
+  private static drawToCanvas( canvasElement: HTMLCanvasElement, canvasContext: CanvasRenderingContext2D, image: HTMLCanvasElement ): void {
     assert && assert( canvasContext, 'must have a canvasContext' );
     canvasContext.save();
     canvasContext.clearRect( 0, 0, canvasElement.width, canvasElement.height );
