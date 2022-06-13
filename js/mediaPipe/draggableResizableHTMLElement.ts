@@ -96,11 +96,9 @@ const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
   // Resizers must be first so that the capture in the "item" listener doesn't suck up the event for the resizer
   resizers.forEach( ( resizer: Node ) => {
     resizer.addEventListener( 'pointerdown', ( ( e: PointerEvent ) => {
-      console.log( 'did it' );
       e.preventDefault();
       e.cancelBubble = true;
 
-      console.log( 'down resizer' );
       const prevX = e.clientX;
       const prevY = e.clientY;
       const currentResizer = e.target;
@@ -113,12 +111,9 @@ const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
       isResizing = true;
 
       const pointermove = ( e: PointerEvent ) => {
-        console.log( 'move' );
         e.preventDefault();
 
         e.cancelBubble = true;
-
-        console.log( 'pointer move on resize' );
         const newX = prevX - e.clientX; //negative to the right, positive to the left
         const newY = prevY - e.clientY; //negative to the bottom, positive to the top
         if ( ( currentResizer as Element ).classList.contains( 'bottom-right' ) ) {
@@ -175,7 +170,6 @@ const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
       const pointerup = ( e: PointerEvent ) => {
         e.preventDefault();
         e.cancelBubble = true;
-        console.log( 'release' );
 
         isResizing = false;
         window.removeEventListener( 'pointermove', pointermove, CAPTURE );
