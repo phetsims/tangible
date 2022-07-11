@@ -51,7 +51,7 @@ type MediaPipeInitializeOptions = {
   // it to a higher value can increase robustness of the solution, at the expense of a higher latency. Ignored if
   // static_image_mode is true, where hand detection simply runs on every image. Default to 0.5. https://google.github.io/mediapipe/solutions/hands#min_tracking_confidence
   minTrackingConfidence?: number;
-}
+};
 
 // 21 points, in order, cooresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
 export type HandLandmarks = [ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ];
@@ -61,14 +61,14 @@ type HandednessData = {
   index: number;
   label: string;
   score: number;
-}
+};
 export type MediaPipeResults = {
   image: HTMLCanvasElement;
 
   // One for each hand detected
   multiHandLandmarks: HandLandmarks[];
   multiHandedness: HandednessData[];
-}
+};
 
 const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
   isValidValue: () => true,
