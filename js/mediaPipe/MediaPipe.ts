@@ -35,6 +35,9 @@ let initialized = false;
 
 type MediaPipeInitializeOptions = {
 
+  // default to false, where we download mediaPipe dependencies from online. If true, use local dependencies to load the library.
+  fromLocalDependency?: boolean;
+
   // Maximum number of hands to detect. Default to 2. See https://google.github.io/mediapipe/solutions/hands#max_num_hands
   maxNumHands?: number;
 
@@ -102,6 +105,7 @@ class MediaPipe {
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
 
     const options = optionize<MediaPipeInitializeOptions>()( {
+      fromLocalDependency: false,
       maxNumHands: 2,
       modelComplexity: 1,
       minDetectionConfidence: 0.2,
@@ -126,14 +130,23 @@ class MediaPipe {
     }
 
     // @ts-ignore
-    const mediaPipeDependencies = window.mediaPipeDependencies;
-    assert && assert( mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
+    assert && options.fromLocalDependency && assert( window.mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
 
     // @ts-ignore
     const hands = new window.Hands( {
       locateFile: ( file: string ) => {
-        assert && assert( mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
-        return mediaPipeDependencies[ file ];
+        if ( options.fromLocalDependency ) {
+
+          // @ts-ignore
+          assert && assert( window.mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
+          // @ts-ignore
+          return window.mediaPipeDependencies[ file ];
+        }
+        else {
+
+          // use a cdn
+          return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/${file}`;
+        }
       }
     } );
     hands.setOptions( options );
