@@ -21,7 +21,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
-  assert && assert( MediaPipeQueryParameters.mediaPipe, '?showVideo is expected to accompany ?mediaPipe and its features' );
+  assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
 }
 
 export type HandPoint = {
