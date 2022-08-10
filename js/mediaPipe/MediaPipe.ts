@@ -12,6 +12,7 @@
 import tangible from '../tangible.js';
 import optionize from '../../../phet-core/js/optionize.js';
 import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
+import OopsDialog from '../../../scenery-phet/js/OopsDialog.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import Property from '../../../axon/js/Property.js';
@@ -19,6 +20,9 @@ import MediaPipeQueryParameters from './MediaPipeQueryParameters.js';
 import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
+import stepTimer from '../../../axon/js/stepTimer.js';
+import { RichText } from '../../../scenery/js/imports.js';
+import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -87,6 +91,10 @@ const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
   }
 } );
 
+// Failure to send camera input to hands indicates that the Hands library was unable to load correctly (most likely
+// due to a lack of internet connection). Keep track of this so that we don't resend failures on every frame.
+let failedOnFrame = false;
+
 class MediaPipe {
 
   // the most recent results from MediaPipe
@@ -103,6 +111,7 @@ class MediaPipe {
   public static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
+    initialized = true;
 
     const options = optionize<MediaPipeInitializeOptions>()( {
       fromLocalDependency: false,
@@ -163,14 +172,38 @@ class MediaPipe {
     // @ts-ignore
     const camera = new window.Camera( videoElement, {
       onFrame: async () => {
-        await hands.send( { image: videoElement } );
+        if ( !failedOnFrame ) {
+          try {
+            await hands.send( { image: videoElement } );
+          }
+          catch( e ) {
+            MediaPipe.showOfflineOopsDialog();
+            failedOnFrame = true;
+          }
+        }
       },
       width: 1280,
       height: 720
     } );
     camera.start();
+  }
 
-    initialized = true;
+  // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
+  private static showOfflineOopsDialog(): void {
+
+    // Waiting for next step ensures we will have a sim to append to the Dialog to.
+    stepTimer.runOnNextTick( () => {
+      const offlineDialog = new OopsDialog( 'Camera Input requires and internet connection to work correctly.', {
+        closeButtonListener: () => {
+          offlineDialog.hide();
+          offlineDialog.dispose();
+        },
+        title: new RichText( 'Error Loading Camera Input: Hands', {
+          font: new PhetFont( 28 )
+        } )
+      } );
+      offlineDialog.show();
+    } );
   }
 
   /**
