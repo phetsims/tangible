@@ -193,7 +193,7 @@ class MediaPipe {
 
     // Waiting for next step ensures we will have a sim to append to the Dialog to.
     stepTimer.runOnNextTick( () => {
-      const offlineDialog = new OopsDialog( 'Camera Input requires and internet connection to work correctly.', {
+      const offlineDialog = new OopsDialog( 'Camera Input requires an internet connection to work correctly.', {
         closeButtonListener: () => {
           offlineDialog.hide();
           offlineDialog.dispose();
