@@ -91,7 +91,7 @@ class MediaPipe {
 
   // the most recent results from MediaPipe
   public static resultsProperty = new Property<MediaPipeResults | null>( null, {
-    phetioType: Property.PropertyIO( NullableIO( MediaPipeResultsIO ) ),
+    phetioValueType: NullableIO( MediaPipeResultsIO ),
     tandem: Tandem.GLOBAL_VIEW.createTandem( 'mediaPipe' ).createTandem( 'resultsProperty' ),
     phetioDocumentation: 'A Property that holds the raw data coming from MediaPipe. Set to null if there are no hands detected.'
   } );
