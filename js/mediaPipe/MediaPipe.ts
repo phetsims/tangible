@@ -221,6 +221,9 @@ class MediaPipe {
         navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
           videoElement.srcObject = stream;
           videoElement.onloadedmetadata = () => videoElement.play();
+        } ).catch( e => {
+          console.error( e );
+          this.showOopsDialog( 'No available media device. Is it being used by another program?' );
         } );
       } );
     }
@@ -272,9 +275,11 @@ class MediaPipe {
   public static getMediaPipeOptionsNode( mediaPipeOptions: MediaPipeOptions, supplementalContent?: Node ): Node {
 
     const deviceComboBoxItems = mediaPipeOptions.availableDevices.map( ( device, i ) => {
+      const label = device.label || `Camera ${i}`;
       return {
         value: device.deviceId,
-        node: new RichText( device.label || `Camera ${i}` )
+        node: new RichText( label ),
+        a11yLabel: label
       };
     } );
 
