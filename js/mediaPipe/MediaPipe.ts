@@ -21,8 +21,11 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { RichText } from '../../../scenery/js/imports.js';
+import { Node, RichText, VBox } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import MediaPipeOptions from './MediaPipeOptions.js';
+import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
+import ComboBox from '../../../sun/js/ComboBox.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -58,6 +61,8 @@ type MediaPipeInitializeOptions = {
   // it to a higher value can increase robustness of the solution, at the expense of a higher latency. Ignored if
   // static_image_mode is true, where hand detection simply runs on every image. Default to 0.5. https://google.github.io/mediapipe/solutions/hands#min_tracking_confidence
   minTrackingConfidence?: number;
+
+  mediaPipeOptionsObject: MediaPipeOptions;
 };
 
 // 21 points, in order, cooresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
@@ -106,9 +111,9 @@ class MediaPipe {
 
   /**
    * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
-   * Stores results of tracking to MediaPipe.results.
+   * Store results of tracking to MediaPipe.results.
    */
-  public static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
+  public static initialize( providedOptions: MediaPipeInitializeOptions ): void {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
     initialized = true;
@@ -170,30 +175,77 @@ class MediaPipe {
     } );
 
     // @ts-ignore
-    const camera = new window.Camera( videoElement, {
-      onFrame: async () => {
-        if ( !failedOnFrame ) {
+    if ( window.navigator.mediaDevices && window.navigator.mediaDevices.getUserMedia ) {
+
+      // Don't send the same video time twice
+      let currentTime = -1;
+
+      // Don't send while already sending data to hands
+      let handsSending = false;
+
+      animationFrameTimer.addListener( async () => {
+        if ( !handsSending && videoElement.srcObject && videoElement.currentTime !== currentTime && !failedOnFrame ) {
+          currentTime = videoElement.currentTime;
           try {
+            handsSending = true;
             await hands.send( { image: videoElement } );
+            handsSending = false;
           }
           catch( e ) {
-            MediaPipe.showOfflineOopsDialog();
+            MediaPipe.showOopsDialog( 'Camera Input requires an internet connection to work correctly.' );
             failedOnFrame = true;
           }
         }
-      },
-      width: 1280,
-      height: 720
-    } );
-    camera.start();
+      } );
+
+      options.mediaPipeOptionsObject.selectedDeviceProperty.link( deviceID => {
+        if ( deviceID === '' ) {
+          assert && assert( !videoElement.srcObject, 'empty selected device but still a src is a bug, right?' );
+          return;
+        }
+        if ( videoElement.srcObject ) {
+          MediaPipe.stopStream( videoElement.srcObject );
+          videoElement.srcObject = null;
+        }
+        const constraints = {
+          video: {
+            facingMode: 'user',
+            width: 1280,
+            height: 720,
+            deviceId: deviceID ? { exact: deviceID } : undefined
+          }
+        };
+
+        // Load the current desired device
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
+          videoElement.srcObject = stream;
+          videoElement.onloadedmetadata = () => videoElement.play();
+        } );
+      } );
+    }
+
+    else {
+      MediaPipe.showOopsDialog( 'No media devices available' );
+    }
+  }
+
+  private static stopStream( stream: MediaProvider ): void {
+    if ( stream instanceof MediaStream ) {
+      const tracks = stream.getTracks();
+
+      for ( let i = 0; i < tracks.length; i++ ) {
+        tracks[ i ].stop();
+      }
+    }
   }
 
   // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
-  private static showOfflineOopsDialog(): void {
+  private static showOopsDialog( message: string ): void {
 
     // Waiting for next step ensures we will have a sim to append to the Dialog to.
     stepTimer.runOnNextTick( () => {
-      const offlineDialog = new OopsDialog( 'Camera Input requires an internet connection to work correctly.', {
+      const offlineDialog = new OopsDialog( message, {
         closeButtonListener: () => {
           offlineDialog.hide();
           offlineDialog.dispose();
@@ -216,6 +268,32 @@ class MediaPipe {
     canvasContext.drawImage( image, 0, 0, canvasElement.width, canvasElement.height );
     canvasContext.restore();
   }
+
+  public static getMediaPipeOptionsNode( mediaPipeOptions: MediaPipeOptions, supplementalContent?: Node ): Node {
+
+    const deviceComboBoxItems = mediaPipeOptions.availableDevices.map( ( device, i ) => {
+      return {
+        value: device.deviceId,
+        node: new RichText( device.label || `Camera ${i}` )
+      };
+    } );
+
+    // A content Node here allows us to have a list box parent for the ComboBox.
+    const content = new Node();
+    const vbox = new VBox( {
+      spacing: 10,
+      align: 'left',
+      children: [
+        new RichText( 'Camera Input: Hands' ),
+        new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content )
+      ]
+    } );
+
+    supplementalContent && vbox.addChild( supplementalContent );
+    content.addChild( vbox );
+    return content;
+  }
+
 }
 
 tangible.register( 'MediaPipe', MediaPipe );
