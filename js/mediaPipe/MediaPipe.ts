@@ -267,6 +267,8 @@ class MediaPipe {
   private static drawToCanvas( canvasElement: HTMLCanvasElement, canvasContext: CanvasRenderingContext2D, image: HTMLCanvasElement ): void {
     assert && assert( canvasContext, 'must have a canvasContext' );
     canvasContext.save();
+    canvasContext.translate( canvasElement.width, 0 );
+    canvasContext.scale( -1, 1 ); // flip camera for viewing to the user.
     canvasContext.clearRect( 0, 0, canvasElement.width, canvasElement.height );
     canvasContext.drawImage( image, 0, 0, canvasElement.width, canvasElement.height );
     canvasContext.restore();
