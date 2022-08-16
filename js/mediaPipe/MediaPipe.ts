@@ -18,13 +18,15 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { Node, Text, TextOptions, VBox, VoicingText } from '../../../scenery/js/imports.js';
+import { Node, Text, TextOptions, VBox, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import MediaPipeOptions from './MediaPipeOptions.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import tangibleStrings from '../tangibleStrings.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import joistStrings from '../../../joist/js/joistStrings.js';
+import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -294,9 +296,15 @@ class MediaPipe {
           tagName: 'h3',
           accessibleName: tangibleStrings.cameraInputHands
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
-        new VoicingText( tangibleStrings.cameraInputHandsHelpText, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+        new VoicingText( tangibleStrings.cameraInputHandsHelpText, combineOptions<VoicingTextOptions>( {
+          readingBlockNameResponse: StringUtils.fillIn( joistStrings.a11y.preferences.tabs.labelledDescriptionPattern, {
+            label: tangibleStrings.cameraInputHands,
+            description: tangibleStrings.cameraInputHandsHelpText
+          } )
+        }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
         new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
-          labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS )
+          labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+          accessibleName: tangibleStrings.inputDevice
         } )
       ]
     } );

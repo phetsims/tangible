@@ -21,6 +21,6 @@
     "value": "Error Loading Camera Input: Hands"
   },
   "cameraInputHandsHelpText": {
-    "value": "With \"cameraInput=hands\" use your hands to move the sim's Left and Right Hands."
+    "value": "Use custom hand movements to control the sim."
   }
 }
