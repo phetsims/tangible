@@ -26,6 +26,7 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import MediaPipeOptions from './MediaPipeOptions.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
+import tangibleStrings from '../tangibleStrings.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -192,7 +193,7 @@ class MediaPipe {
             handsSending = false;
           }
           catch( e ) {
-            MediaPipe.showOopsDialog( 'Camera Input requires an internet connection to work correctly.' );
+            MediaPipe.showOopsDialog( tangibleStrings.cameraInputRequiresInternet );
             failedOnFrame = true;
           }
         }
@@ -223,13 +224,13 @@ class MediaPipe {
           videoElement.onloadedmetadata = () => videoElement.play();
         } ).catch( e => {
           console.error( e );
-          this.showOopsDialog( 'No available media device. Is it being used by another program?' );
+          this.showOopsDialog( tangibleStrings.noMediaDevice );
         } );
       } );
     }
 
     else {
-      MediaPipe.showOopsDialog( 'No media devices available' );
+      MediaPipe.showOopsDialog( tangibleStrings.noMediaDevices );
     }
   }
 
@@ -253,7 +254,7 @@ class MediaPipe {
           offlineDialog.hide();
           offlineDialog.dispose();
         },
-        title: new RichText( 'Error Loading Camera Input: Hands', {
+        title: new RichText( tangibleStrings.errorLoadingCameraInputHands, {
           font: new PhetFont( 28 )
         } )
       } );
@@ -291,7 +292,7 @@ class MediaPipe {
       spacing: 10,
       align: 'left',
       children: [
-        new RichText( 'Camera Input: Hands' ),
+        new RichText( tangibleStrings.cameraInputHands ),
         new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content )
       ]
     } );
