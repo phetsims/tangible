@@ -15,6 +15,8 @@ type StringsType = {
   };
   'cameraInputHands': string;
   'cameraInputHandsProperty': TReadOnlyProperty<string>;
+  'inputDevice': string;
+  'inputDeviceProperty': TReadOnlyProperty<string>;
   'cameraInputRequiresInternet': string;
   'cameraInputRequiresInternetProperty': TReadOnlyProperty<string>;
   'noMediaDevices': string;
@@ -23,6 +25,8 @@ type StringsType = {
   'noMediaDeviceProperty': TReadOnlyProperty<string>;
   'errorLoadingCameraInputHands': string;
   'errorLoadingCameraInputHandsProperty': TReadOnlyProperty<string>;
+  'cameraInputHandsHelpText': string;
+  'cameraInputHandsHelpTextProperty': TReadOnlyProperty<string>;
 };
 
 const tangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;

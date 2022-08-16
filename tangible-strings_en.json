@@ -5,6 +5,9 @@
   "cameraInputHands": {
     "value": "Camera Input: Hands"
   },
+  "inputDevice": {
+    "value": "Input Device:"
+  },
   "cameraInputRequiresInternet": {
     "value": "Camera Input requires an internet connection."
   },
@@ -16,5 +19,8 @@
   },
   "errorLoadingCameraInputHands": {
     "value": "Error Loading Camera Input: Hands"
+  },
+  "cameraInputHandsHelpText": {
+    "value": "With \"cameraInput=hands\" use your hands to move the sim's Left and Right Hands."
   }
 }

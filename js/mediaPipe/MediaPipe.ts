@@ -4,13 +4,10 @@
  * Adds the boilerplate needed for MediaPipe "hands" implementation to run in PhET Sims. See https://github.com/phetsims/ratio-and-proportion/issues/431
  * See https://google.github.io/mediapipe/solutions/hands.html
  *
- *
- * TODO: lock in URLs like     `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1646424915/hands_solution_wasm_bin.wasm`
- *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import tangible from '../tangible.js';
-import optionize from '../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import OopsDialog from '../../../scenery-phet/js/OopsDialog.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
@@ -21,12 +18,13 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { Node, RichText, VBox } from '../../../scenery/js/imports.js';
+import { Node, Text, TextOptions, VBox, VoicingText } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import MediaPipeOptions from './MediaPipeOptions.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import tangibleStrings from '../tangibleStrings.js';
+import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -254,7 +252,7 @@ class MediaPipe {
           offlineDialog.hide();
           offlineDialog.dispose();
         },
-        title: new RichText( tangibleStrings.errorLoadingCameraInputHands, {
+        title: new Text( tangibleStrings.errorLoadingCameraInputHands, {
           font: new PhetFont( 28 )
         } )
       } );
@@ -281,7 +279,7 @@ class MediaPipe {
       const label = device.label || `Camera ${i}`;
       return {
         value: device.deviceId,
-        node: new RichText( label ),
+        node: new Text( label ),
         a11yLabel: label
       };
     } );
@@ -292,8 +290,14 @@ class MediaPipe {
       spacing: 10,
       align: 'left',
       children: [
-        new RichText( tangibleStrings.cameraInputHands ),
-        new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content )
+        new Text( tangibleStrings.cameraInputHands, combineOptions<TextOptions>( {
+          tagName: 'h3',
+          accessibleName: tangibleStrings.cameraInputHands
+        }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
+        new VoicingText( tangibleStrings.cameraInputHandsHelpText, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+        new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
+          labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS )
+        } )
       ]
     } );
 
