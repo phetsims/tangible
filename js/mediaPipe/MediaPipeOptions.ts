@@ -14,12 +14,15 @@ class MediaPipeOptions {
 
   public constructor() {
     ( async () => { // eslint-disable-line @typescript-eslint/no-floating-promises
-      const mediaDevices = await navigator.mediaDevices.enumerateDevices();
 
-      for ( let i = 0; i < mediaDevices.length; i++ ) {
-        const mediaDevice = mediaDevices[ i ];
-        if ( mediaDevice.kind === 'videoinput' ) {
-          this.availableDevices.push( mediaDevice );
+      if ( navigator.mediaDevices ) {
+
+        const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+        for ( let i = 0; i < mediaDevices.length; i++ ) {
+          const mediaDevice = mediaDevices[ i ];
+          if ( mediaDevice.kind === 'videoinput' ) {
+            this.availableDevices.push( mediaDevice );
+          }
         }
       }
       if ( this.availableDevices.length > 0 ) {

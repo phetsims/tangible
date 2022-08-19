@@ -193,6 +193,7 @@ class MediaPipe {
             handsSending = false;
           }
           catch( e ) {
+            console.error( 'Internet trouble:', e );
             MediaPipe.showOopsDialog( tangibleStrings.cameraInputRequiresInternet );
             failedOnFrame = true;
           }
@@ -230,6 +231,7 @@ class MediaPipe {
     }
 
     else {
+      console.error( 'no navigator.mediaDevices detected' );
       MediaPipe.showOopsDialog( tangibleStrings.noMediaDevices );
     }
   }
@@ -288,6 +290,13 @@ class MediaPipe {
 
     // A content Node here allows us to have a list box parent for the ComboBox.
     const content = new Node();
+
+    // If there aren't mediaDevices available, be graceful
+    const deviceSelectorNode = mediaPipeOptions.availableDevices.length > 0 ? new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
+      labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+      accessibleName: tangibleStrings.inputDevice
+    } ) : new Node();
+
     const vbox = new VBox( {
       spacing: 10,
       align: 'left',
@@ -302,10 +311,7 @@ class MediaPipe {
             description: tangibleStrings.cameraInputHandsHelpText
           } )
         }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
-        new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
-          labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
-          accessibleName: tangibleStrings.inputDevice
-        } )
+        deviceSelectorNode
       ]
     } );
 
