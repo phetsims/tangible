@@ -294,7 +294,8 @@ class MediaPipe {
     // If there aren't mediaDevices available, be graceful
     const deviceSelectorNode = mediaPipeOptions.availableDevices.length > 0 ? new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
       labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
-      accessibleName: tangibleStrings.inputDevice
+      accessibleName: tangibleStrings.inputDevice,
+      tandem: Tandem.OPT_OUT
     } ) : new Node();
 
     const vbox = new VBox( {
