@@ -66,7 +66,7 @@ type MediaPipeInitializeOptions = {
   mediaPipeOptionsObject: MediaPipeOptions;
 };
 
-// 21 points, in order, cooresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
+// 21 points, in order, corresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
 export type HandLandmarks = [ HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint, HandPoint ];
 
 type HandednessData = {
@@ -100,6 +100,10 @@ const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
 // Failure to send camera input to hands indicates that the Hands library was unable to load correctly (most likely
 // due to a lack of internet connection). Keep track of this so that we don't resend failures on every frame.
 let failedOnFrame = false;
+
+// Keep our own track of if we have started playing the video (which is the metric that matters for sending data to the
+// hands model).
+let videoPlaying = false;
 
 class MediaPipe {
 
@@ -185,7 +189,14 @@ class MediaPipe {
       let handsSending = false;
 
       animationFrameTimer.addListener( async () => {
-        if ( !handsSending && videoElement.srcObject && videoElement.currentTime !== currentTime && !failedOnFrame ) {
+
+        // We need to be careful here. Hands does not want to be sent "bad" data. This includes:
+        // * Currently waiting for hands.send to resolve
+        // * There isn't a videoElement that is playing
+        // * There isn't a videoElement with a stream attached to it (thus no image data)
+        // * Duplicating the "send" call on the same frame would be redundant
+        if ( !handsSending && videoPlaying && videoElement.srcObject &&
+             videoElement.currentTime !== currentTime && !failedOnFrame ) {
           currentTime = videoElement.currentTime;
           try {
             handsSending = true;
@@ -201,32 +212,10 @@ class MediaPipe {
       } );
 
       options.mediaPipeOptionsObject.selectedDeviceProperty.link( deviceID => {
-        if ( deviceID === '' ) {
-          assert && assert( !videoElement.srcObject, 'empty selected device but still a src is a bug, right?' );
-          return;
-        }
         if ( videoElement.srcObject ) {
-          MediaPipe.stopStream( videoElement.srcObject );
-          videoElement.srcObject = null;
+          MediaPipe.stopStream( videoElement );
         }
-        const constraints = {
-          video: {
-            facingMode: 'user',
-            width: 1280,
-            height: 720,
-            deviceId: deviceID ? { exact: deviceID } : undefined
-          }
-        };
-
-        // Load the current desired device
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
-          videoElement.srcObject = stream;
-          videoElement.onloadedmetadata = () => videoElement.play();
-        } ).catch( e => {
-          console.error( e );
-          this.showOopsDialog( tangibleStrings.noMediaDevice );
-        } );
+        MediaPipe.startStream( videoElement, deviceID );
       } );
     }
 
@@ -236,14 +225,42 @@ class MediaPipe {
     }
   }
 
-  private static stopStream( stream: MediaProvider ): void {
-    if ( stream instanceof MediaStream ) {
-      const tracks = stream.getTracks();
+  private static stopStream( videoElement: HTMLVideoElement ): void {
+    if ( videoElement.srcObject instanceof MediaStream ) {
+      const tracks = videoElement.srcObject.getTracks();
 
       for ( let i = 0; i < tracks.length; i++ ) {
         tracks[ i ].stop();
       }
     }
+    videoElement.srcObject = null;
+    videoPlaying = false;
+  }
+
+  private static startStream( videoElement: HTMLVideoElement, deviceID: string ): void {
+    const constraints = {
+      video: {
+        facingMode: 'user',
+        width: 1280,
+        height: 720,
+        deviceId: ( deviceID && deviceID !== '' ) ? { exact: deviceID } : undefined
+      }
+    };
+
+    // Load the current desired device
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
+      videoElement.srcObject = stream;
+      videoElement.onloadedmetadata = async () => {
+        await videoElement.play();
+
+        // Keep our own data here, because I couldn't find this data on the videoElement itself.
+        videoPlaying = true;
+      };
+    } ).catch( e => {
+      console.error( e );
+      MediaPipe.showOopsDialog( tangibleStrings.noMediaDevice );
+    } );
   }
 
   // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
@@ -280,7 +297,7 @@ class MediaPipe {
   public static getMediaPipeOptionsNode( mediaPipeOptions: MediaPipeOptions, supplementalContent?: Node ): Node {
 
     const deviceComboBoxItems = mediaPipeOptions.availableDevices.map( ( device, i ) => {
-      const label = device.label || `Camera ${i}`;
+      const label = device.label || `Camera ${i + 1}`;
       return {
         value: device.deviceId,
         node: new Text( label ),
