@@ -11,22 +11,22 @@ import tangible from './tangible.js';
 type StringsType = {
   'tangible': {
     'title': string;
-    'titleProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': TReadOnlyProperty<string>;
   };
   'cameraInputHands': string;
-  'cameraInputHandsProperty': TReadOnlyProperty<string>;
+  'cameraInputHandsStringProperty': TReadOnlyProperty<string>;
   'inputDevice': string;
-  'inputDeviceProperty': TReadOnlyProperty<string>;
+  'inputDeviceStringProperty': TReadOnlyProperty<string>;
   'cameraInputRequiresInternet': string;
-  'cameraInputRequiresInternetProperty': TReadOnlyProperty<string>;
+  'cameraInputRequiresInternetStringProperty': TReadOnlyProperty<string>;
   'noMediaDevices': string;
-  'noMediaDevicesProperty': TReadOnlyProperty<string>;
+  'noMediaDevicesStringProperty': TReadOnlyProperty<string>;
   'noMediaDevice': string;
-  'noMediaDeviceProperty': TReadOnlyProperty<string>;
+  'noMediaDeviceStringProperty': TReadOnlyProperty<string>;
   'errorLoadingCameraInputHands': string;
-  'errorLoadingCameraInputHandsProperty': TReadOnlyProperty<string>;
+  'errorLoadingCameraInputHandsStringProperty': TReadOnlyProperty<string>;
   'cameraInputHandsHelpText': string;
-  'cameraInputHandsHelpTextProperty': TReadOnlyProperty<string>;
+  'cameraInputHandsHelpTextStringProperty': TReadOnlyProperty<string>;
 };
 
 const tangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;
