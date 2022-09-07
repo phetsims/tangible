@@ -23,9 +23,9 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import MediaPipeOptions from './MediaPipeOptions.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
-import tangibleStrings from '../tangibleStrings.js';
+import TangibleStrings from '../TangibleStrings.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
-import joistStrings from '../../../joist/js/joistStrings.js';
+import JoistStrings from '../../../joist/js/JoistStrings.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
@@ -205,7 +205,7 @@ class MediaPipe {
           }
           catch( e ) {
             console.error( 'Internet trouble:', e );
-            MediaPipe.showOopsDialog( tangibleStrings.cameraInputRequiresInternet );
+            MediaPipe.showOopsDialog( TangibleStrings.cameraInputRequiresInternet );
             failedOnFrame = true;
           }
         }
@@ -221,7 +221,7 @@ class MediaPipe {
 
     else {
       console.error( 'no navigator.mediaDevices detected' );
-      MediaPipe.showOopsDialog( tangibleStrings.noMediaDevices );
+      MediaPipe.showOopsDialog( TangibleStrings.noMediaDevices );
     }
   }
 
@@ -259,7 +259,7 @@ class MediaPipe {
       };
     } ).catch( e => {
       console.error( e );
-      MediaPipe.showOopsDialog( tangibleStrings.noMediaDevice );
+      MediaPipe.showOopsDialog( TangibleStrings.noMediaDevice );
     } );
   }
 
@@ -273,7 +273,7 @@ class MediaPipe {
           offlineDialog.hide();
           offlineDialog.dispose();
         },
-        title: new Text( tangibleStrings.errorLoadingCameraInputHands, {
+        title: new Text( TangibleStrings.errorLoadingCameraInputHands, {
           font: new PhetFont( 28 )
         } )
       } );
@@ -310,8 +310,8 @@ class MediaPipe {
 
     // If there aren't mediaDevices available, be graceful
     const deviceSelectorNode = mediaPipeOptions.availableDevices.length > 0 ? new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
-      labelNode: new Text( tangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
-      accessibleName: tangibleStrings.inputDevice,
+      labelNode: new Text( TangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+      accessibleName: TangibleStrings.inputDevice,
       tandem: Tandem.OPT_OUT
     } ) : new Node();
 
@@ -319,14 +319,14 @@ class MediaPipe {
       spacing: 10,
       align: 'left',
       children: [
-        new Text( tangibleStrings.cameraInputHands, combineOptions<TextOptions>( {
+        new Text( TangibleStrings.cameraInputHands, combineOptions<TextOptions>( {
           tagName: 'h3',
-          accessibleName: tangibleStrings.cameraInputHands
+          accessibleName: TangibleStrings.cameraInputHands
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
-        new VoicingText( tangibleStrings.cameraInputHandsHelpText, combineOptions<VoicingTextOptions>( {
-          readingBlockNameResponse: StringUtils.fillIn( joistStrings.a11y.preferences.tabs.labelledDescriptionPattern, {
-            label: tangibleStrings.cameraInputHands,
-            description: tangibleStrings.cameraInputHandsHelpText
+        new VoicingText( TangibleStrings.cameraInputHandsHelpText, combineOptions<VoicingTextOptions>( {
+          readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPattern, {
+            label: TangibleStrings.cameraInputHands,
+            description: TangibleStrings.cameraInputHandsHelpText
           } )
         }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
         deviceSelectorNode

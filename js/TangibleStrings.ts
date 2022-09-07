@@ -29,8 +29,8 @@ type StringsType = {
   'cameraInputHandsHelpTextStringProperty': TReadOnlyProperty<string>;
 };
 
-const tangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;
+const TangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;
 
-tangible.register( 'tangibleStrings', tangibleStrings );
+tangible.register( 'TangibleStrings', TangibleStrings );
 
-export default tangibleStrings;
+export default TangibleStrings;
