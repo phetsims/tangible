@@ -5,28 +5,28 @@
  */
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
-import TReadOnlyProperty from '../../axon/js/TReadOnlyProperty.js';
+import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import tangible from './tangible.js';
 
 type StringsType = {
   'tangible': {
     'title': string;
-    'titleStringProperty': TReadOnlyProperty<string>;
+    'titleStringProperty': LinkableProperty<string>;
   };
   'cameraInputHands': string;
-  'cameraInputHandsStringProperty': TReadOnlyProperty<string>;
+  'cameraInputHandsStringProperty': LinkableProperty<string>;
   'inputDevice': string;
-  'inputDeviceStringProperty': TReadOnlyProperty<string>;
+  'inputDeviceStringProperty': LinkableProperty<string>;
   'cameraInputRequiresInternet': string;
-  'cameraInputRequiresInternetStringProperty': TReadOnlyProperty<string>;
+  'cameraInputRequiresInternetStringProperty': LinkableProperty<string>;
   'noMediaDevices': string;
-  'noMediaDevicesStringProperty': TReadOnlyProperty<string>;
+  'noMediaDevicesStringProperty': LinkableProperty<string>;
   'noMediaDevice': string;
-  'noMediaDeviceStringProperty': TReadOnlyProperty<string>;
+  'noMediaDeviceStringProperty': LinkableProperty<string>;
   'errorLoadingCameraInputHands': string;
-  'errorLoadingCameraInputHandsStringProperty': TReadOnlyProperty<string>;
+  'errorLoadingCameraInputHandsStringProperty': LinkableProperty<string>;
   'cameraInputHandsHelpText': string;
-  'cameraInputHandsHelpTextStringProperty': TReadOnlyProperty<string>;
+  'cameraInputHandsHelpTextStringProperty': LinkableProperty<string>;
 };
 
 const TangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;
