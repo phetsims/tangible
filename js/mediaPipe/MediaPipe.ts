@@ -248,7 +248,7 @@ class MediaPipe {
     };
 
     // Load the current desired device
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+     
     navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
       videoElement.srcObject = stream;
       videoElement.onloadedmetadata = async () => {
