@@ -10,22 +10,14 @@ import tangible from './tangible.js';
 
 type StringsType = {
   'tangible': {
-    'title': string;
     'titleStringProperty': LinkableProperty<string>;
   };
-  'cameraInputHands': string;
   'cameraInputHandsStringProperty': LinkableProperty<string>;
-  'inputDevice': string;
   'inputDeviceStringProperty': LinkableProperty<string>;
-  'cameraInputRequiresInternet': string;
   'cameraInputRequiresInternetStringProperty': LinkableProperty<string>;
-  'noMediaDevices': string;
   'noMediaDevicesStringProperty': LinkableProperty<string>;
-  'noMediaDevice': string;
   'noMediaDeviceStringProperty': LinkableProperty<string>;
-  'errorLoadingCameraInputHands': string;
   'errorLoadingCameraInputHandsStringProperty': LinkableProperty<string>;
-  'cameraInputHandsHelpText': string;
   'cameraInputHandsHelpTextStringProperty': LinkableProperty<string>;
 };
 

@@ -27,6 +27,7 @@ import TangibleStrings from '../TangibleStrings.js';
 import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
 import JoistStrings from '../../../joist/js/JoistStrings.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -205,7 +206,7 @@ class MediaPipe {
           }
           catch( e ) {
             console.error( 'Internet trouble:', e );
-            MediaPipe.showOopsDialog( TangibleStrings.cameraInputRequiresInternet );
+            MediaPipe.showOopsDialog( TangibleStrings.cameraInputRequiresInternetStringProperty );
             failedOnFrame = true;
           }
         }
@@ -221,7 +222,7 @@ class MediaPipe {
 
     else {
       console.error( 'no navigator.mediaDevices detected' );
-      MediaPipe.showOopsDialog( TangibleStrings.noMediaDevices );
+      MediaPipe.showOopsDialog( TangibleStrings.noMediaDevicesStringProperty );
     }
   }
 
@@ -248,7 +249,7 @@ class MediaPipe {
     };
 
     // Load the current desired device
-     
+
     navigator.mediaDevices.getUserMedia( constraints ).then( stream => {
       videoElement.srcObject = stream;
       videoElement.onloadedmetadata = async () => {
@@ -259,12 +260,12 @@ class MediaPipe {
       };
     } ).catch( e => {
       console.error( e );
-      MediaPipe.showOopsDialog( TangibleStrings.noMediaDevice );
+      MediaPipe.showOopsDialog( TangibleStrings.noMediaDeviceStringProperty );
     } );
   }
 
   // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
-  private static showOopsDialog( message: string ): void {
+  private static showOopsDialog( message: TReadOnlyProperty<string> ): void {
 
     // Waiting for next step ensures we will have a sim to append to the Dialog to.
     stepTimer.runOnNextTick( () => {
@@ -273,7 +274,7 @@ class MediaPipe {
           offlineDialog.hide();
           offlineDialog.dispose();
         },
-        title: new Text( TangibleStrings.errorLoadingCameraInputHands, {
+        title: new Text( TangibleStrings.errorLoadingCameraInputHandsStringProperty, {
           font: new PhetFont( 28 )
         } )
       } );
@@ -310,8 +311,8 @@ class MediaPipe {
 
     // If there aren't mediaDevices available, be graceful
     const deviceSelectorNode = mediaPipeOptions.availableDevices.length > 0 ? new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
-      labelNode: new Text( TangibleStrings.inputDevice, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
-      accessibleName: TangibleStrings.inputDevice,
+      labelNode: new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+      accessibleName: TangibleStrings.inputDeviceStringProperty,
       tandem: Tandem.OPT_OUT
     } ) : new Node();
 
@@ -319,14 +320,14 @@ class MediaPipe {
       spacing: 10,
       align: 'left',
       children: [
-        new Text( TangibleStrings.cameraInputHands, combineOptions<TextOptions>( {
+        new Text( TangibleStrings.cameraInputHandsStringProperty, combineOptions<TextOptions>( {
           tagName: 'h3',
-          accessibleName: TangibleStrings.cameraInputHands
+          accessibleName: TangibleStrings.cameraInputHandsStringProperty
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
-        new VoicingText( TangibleStrings.cameraInputHandsHelpText, combineOptions<VoicingTextOptions>( {
+        new VoicingText( TangibleStrings.cameraInputHandsHelpTextStringProperty, combineOptions<VoicingTextOptions>( {
           readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPattern, {
-            label: TangibleStrings.cameraInputHands,
-            description: TangibleStrings.cameraInputHandsHelpText
+            label: TangibleStrings.cameraInputHandsStringProperty,
+            description: TangibleStrings.cameraInputHandsHelpTextStringProperty
           } )
         }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
         deviceSelectorNode
