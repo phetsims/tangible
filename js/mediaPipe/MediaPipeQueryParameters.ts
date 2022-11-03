@@ -18,6 +18,12 @@ const MediaPipeQueryParameters = QueryStringMachine.getAll( {
   // Show a draggable/resizable video on top of the sim while using MediaPipe
   showVideo: {
     type: 'flag'
+  },
+
+  // How often to parse a cameraInput during an animation frame. 1 means every frame, 2 every other.
+  cameraFrameResolution: {
+    type: 'number',
+    defaultValue: 1
   }
 } );
 

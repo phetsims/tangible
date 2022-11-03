@@ -201,7 +201,7 @@ class MediaPipe {
 
         animationFrameCounter = ++animationFrameCounter % 100000000;
 
-        if ( animationFrameCounter % 2 !== 0 ) {
+        if ( animationFrameCounter % MediaPipeQueryParameters.cameraFrameResolution !== 0 ) {
           return;
         }
 
