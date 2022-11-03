@@ -195,7 +195,15 @@ class MediaPipe {
       // Don't send while already sending data to hands
       let handsSending = false;
 
+      let animationFrameCounter = 0;
+
       animationFrameTimer.addListener( async () => {
+
+        animationFrameCounter = ++animationFrameCounter % 100000000;
+
+        if ( animationFrameCounter % 2 !== 0 ) {
+          return;
+        }
 
         // We need to be careful here. Hands does not want to be sent "bad" data. This includes:
         // * Currently waiting for hands.send to resolve
