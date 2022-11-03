@@ -24,6 +24,12 @@ const MediaPipeQueryParameters = QueryStringMachine.getAll( {
   cameraFrameResolution: {
     type: 'number',
     defaultValue: 1
+  },
+
+  // How much to scale the camera image, determining the number of pixels for MediaPipe to process.
+  cameraImageResolutionFactor: {
+    type: 'number',
+    defaultValue: 0.5
   }
 } );
 

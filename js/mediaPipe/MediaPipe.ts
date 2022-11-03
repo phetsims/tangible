@@ -33,7 +33,7 @@ if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
 }
 
-const VIDEO_SCALE_FACTOR = 0.25;
+const CAMERA_IMAGE_RESOLUTION_FACTOR = MediaPipeQueryParameters.cameraImageResolutionFactor;
 
 export type HandPoint = {
   x: number;
@@ -173,11 +173,6 @@ class MediaPipe {
     } );
     hands.setOptions( options );
     hands.onResults( ( results: MediaPipeResults ) => {
-
-      // Smaller
-      videoElement.width = videoElement.videoWidth * VIDEO_SCALE_FACTOR;
-      videoElement.height = videoElement.videoHeight * VIDEO_SCALE_FACTOR;
-
       MediaPipe.resultsProperty.value = results.multiHandLandmarks.length > 0 ? results : null;
 
       // Update the image if displaying the canvas video over the phetsim.
@@ -213,6 +208,10 @@ class MediaPipe {
         if ( !handsSending && videoPlaying && videoElement.srcObject &&
              videoElement.currentTime !== currentTime && !failedOnFrame ) {
           currentTime = videoElement.currentTime;
+
+          videoElement.width = videoElement.videoWidth * CAMERA_IMAGE_RESOLUTION_FACTOR;
+          videoElement.height = videoElement.videoHeight * CAMERA_IMAGE_RESOLUTION_FACTOR;
+
           try {
             handsSending = true;
             await hands.send( { image: videoElement } );
