@@ -33,6 +33,8 @@ if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
 }
 
+const VIDEO_SCALE_FACTOR = 0.25;
+
 export type HandPoint = {
   x: number;
   y: number;
@@ -171,6 +173,10 @@ class MediaPipe {
     } );
     hands.setOptions( options );
     hands.onResults( ( results: MediaPipeResults ) => {
+
+      // Smaller
+      videoElement.width = videoElement.videoWidth * VIDEO_SCALE_FACTOR;
+      videoElement.height = videoElement.videoHeight * VIDEO_SCALE_FACTOR;
 
       MediaPipe.resultsProperty.value = results.multiHandLandmarks.length > 0 ? results : null;
 
