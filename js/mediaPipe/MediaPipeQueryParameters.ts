@@ -4,6 +4,7 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
+import platform from '../../../phet-core/js/platform.js';
 import tangible from '../tangible.js';
 
 const MediaPipeQueryParameters = QueryStringMachine.getAll( {
@@ -23,13 +24,17 @@ const MediaPipeQueryParameters = QueryStringMachine.getAll( {
   // How often to parse a cameraInput during an animation frame. 1 means every frame, 2 every other.
   cameraFrameResolution: {
     type: 'number',
-    defaultValue: 1
+
+    // To help improve performance, compute hands from webcam less often on iOS.
+    defaultValue: platform.mobileSafari ? 3 : 1
   },
 
   // How much to scale the camera image, determining the number of pixels for MediaPipe to process.
   cameraImageResolutionFactor: {
     type: 'number',
-    defaultValue: 0.5
+
+    // To help improve performance, make the image capture smaller.
+    defaultValue: platform.mobileSafari ? 0.2 : 0.5
   }
 } );
 
