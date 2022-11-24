@@ -22,5 +22,28 @@
   },
   "cameraInputHandsHelpText": {
     "value": "Use custom hand movements to control the sim."
+  },
+  "cameraInputFlipX": {
+    "value": "Flip hand operation between mirrored hand control and opposite hand control"
+  },
+  "cameraInputFlipY": {
+    "value": "Flip camera view of hands between frontal and horizontal views"
+  },
+  "troubleshootingCameraInputHands": {
+    "value": "Troubleshooting Camera Input: Hands"
+  },
+  "a11y": {
+    "cameraInputFlipXChecked": {
+      "value": "Using opposite hand control."
+    },
+    "cameraInputFlipXUnchecked": {
+      "value": "Using mirrored hand control."
+    },
+    "cameraInputFlipYChecked": {
+      "value": "Using horizontal view of hands."
+    },
+    "cameraInputFlipYUnchecked": {
+      "value": "Using frontal view of hands."
+    }
   }
 }
