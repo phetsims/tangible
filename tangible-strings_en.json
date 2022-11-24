@@ -24,26 +24,35 @@
     "value": "Use custom hand movements to control the sim."
   },
   "cameraInputFlipX": {
-    "value": "Flip hand operation between mirrored hand control and opposite hand control"
+    "value": "Flip camera X-axis."
+  },
+  "cameraInputFlipXHeading": {
+    "value": "Are your hands moving the simulation hands in the wrong direction?"
   },
   "cameraInputFlipY": {
-    "value": "Flip camera view of hands between frontal and horizontal views"
+    "value": "Flip camera Y-axis."
+  },
+  "cameraInputFlipYHeading": {
+    "value": "Are your hands mapped to the wrong simulation hands?"
   },
   "troubleshootingCameraInputHands": {
     "value": "Troubleshooting Camera Input: Hands"
   },
+  "troubleshootingParagraph": {
+    "value": "If needed, use the options below to change the behavior of the simulation hands to match your hand movements."
+  },
   "a11y": {
     "cameraInputFlipXChecked": {
-      "value": "Using opposite hand control."
+      "value": "X-axis for camera flipped."
     },
     "cameraInputFlipXUnchecked": {
-      "value": "Using mirrored hand control."
+      "value": "X-axis for camera not flipped."
     },
     "cameraInputFlipYChecked": {
-      "value": "Using horizontal view of hands."
+      "value": "Y-axis for camera flipped."
     },
     "cameraInputFlipYUnchecked": {
-      "value": "Using frontal view of hands."
+      "value": "Y-axis for camera not flipped."
     }
   }
 }

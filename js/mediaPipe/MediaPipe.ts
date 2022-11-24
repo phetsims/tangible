@@ -18,7 +18,7 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { Node, RichText, Text, TextOptions, VBox, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
+import { Node, RichText, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
@@ -359,7 +359,7 @@ class MediaPipe {
           accessibleName: TangibleStrings.cameraInputHandsStringProperty
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
         new VoicingText( TangibleStrings.cameraInputHandsHelpTextStringProperty, combineOptions<VoicingTextOptions>( {
-          readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPattern, {
+          readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPatternStringProperty, {
             label: TangibleStrings.cameraInputHandsStringProperty,
             description: TangibleStrings.cameraInputHandsHelpTextStringProperty
           } )
@@ -368,11 +368,18 @@ class MediaPipe {
         new VBox( {
           spacing: 5,
           align: 'left',
+          layoutOptions: { topMargin: 10 },
           children: [
             new VoicingText( TangibleStrings.troubleshootingCameraInputHandsStringProperty, combineOptions<TextOptions>( {
               tagName: 'h3',
               accessibleName: TangibleStrings.troubleshootingCameraInputHandsStringProperty
             }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
+            new VoicingRichText( TangibleStrings.troubleshootingParagraphStringProperty, combineOptions<VoicingRichTextOptions>( {
+              lineWrap: PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS.maxWidth
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
+            new VoicingText( TangibleStrings.cameraInputFlipYHeadingStringProperty, combineOptions<VoicingTextOptions>( {
+              layoutOptions: { topMargin: 15 }
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
             new Checkbox( MediaPipe.yAxisFlippedProperty,
               new RichText( TangibleStrings.cameraInputFlipYStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
@@ -382,6 +389,9 @@ class MediaPipe {
                 uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
                 tandem: Tandem.OPT_OUT
               } ),
+            new VoicingText( TangibleStrings.cameraInputFlipXHeadingStringProperty, combineOptions<VoicingTextOptions>( {
+              layoutOptions: { topMargin: 10 }
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
             new Checkbox( MediaPipe.xAxisFlippedProperty,
               new RichText( TangibleStrings.cameraInputFlipXStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
