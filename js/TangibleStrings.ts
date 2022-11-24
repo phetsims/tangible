@@ -20,8 +20,11 @@ type StringsType = {
   'errorLoadingCameraInputHandsStringProperty': LinkableProperty<string>;
   'cameraInputHandsHelpTextStringProperty': LinkableProperty<string>;
   'cameraInputFlipXStringProperty': LinkableProperty<string>;
+  'cameraInputFlipXHeadingStringProperty': LinkableProperty<string>;
   'cameraInputFlipYStringProperty': LinkableProperty<string>;
+  'cameraInputFlipYHeadingStringProperty': LinkableProperty<string>;
   'troubleshootingCameraInputHandsStringProperty': LinkableProperty<string>;
+  'troubleshootingParagraphStringProperty': LinkableProperty<string>;
   'a11y': {
     'cameraInputFlipXCheckedStringProperty': LinkableProperty<string>;
     'cameraInputFlipXUncheckedStringProperty': LinkableProperty<string>;
