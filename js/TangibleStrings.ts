@@ -19,6 +19,15 @@ type StringsType = {
   'noMediaDeviceStringProperty': LinkableProperty<string>;
   'errorLoadingCameraInputHandsStringProperty': LinkableProperty<string>;
   'cameraInputHandsHelpTextStringProperty': LinkableProperty<string>;
+  'cameraInputFlipXStringProperty': LinkableProperty<string>;
+  'cameraInputFlipYStringProperty': LinkableProperty<string>;
+  'troubleshootingCameraInputHandsStringProperty': LinkableProperty<string>;
+  'a11y': {
+    'cameraInputFlipXCheckedStringProperty': LinkableProperty<string>;
+    'cameraInputFlipXUncheckedStringProperty': LinkableProperty<string>;
+    'cameraInputFlipYCheckedStringProperty': LinkableProperty<string>;
+    'cameraInputFlipYUncheckedStringProperty': LinkableProperty<string>;
+  }
 };
 
 const TangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;

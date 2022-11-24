@@ -18,9 +18,8 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { Node, Text, TextOptions, VBox, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
+import { Node, RichText, Text, TextOptions, VBox, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import MediaPipeOptions from './MediaPipeOptions.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
 import TangibleStrings from '../TangibleStrings.js';
@@ -28,6 +27,9 @@ import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.j
 import JoistStrings from '../../../joist/js/JoistStrings.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Checkbox from '../../../sun/js/Checkbox.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -65,8 +67,6 @@ type MediaPipeInitializeOptions = {
   // it to a higher value can increase robustness of the solution, at the expense of a higher latency. Ignored if
   // static_image_mode is true, where hand detection simply runs on every image. Default to 0.5. https://google.github.io/mediapipe/solutions/hands#min_tracking_confidence
   minTrackingConfidence?: number;
-
-  mediaPipeOptionsObject: MediaPipeOptions;
 };
 
 // 21 points, in order, corresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
@@ -109,6 +109,10 @@ let failedOnFrame = false;
 let videoPlaying = false;
 
 class MediaPipe {
+  public static selectedDeviceProperty = new StringProperty( '' );
+  public static availableDevices: MediaDeviceInfo[] = [];
+  public static xAxisFlippedProperty = new BooleanProperty( false );
+  public static yAxisFlippedProperty = new BooleanProperty( false );
 
   // the most recent results from MediaPipe
   public static resultsProperty = new Property<MediaPipeResults | null>( null, {
@@ -121,7 +125,7 @@ class MediaPipe {
    * Initialize mediaPipe by loading all needed scripts, and initializing hand tracking.
    * Store results of tracking to MediaPipe.results.
    */
-  public static initialize( providedOptions: MediaPipeInitializeOptions ): void {
+  public static initialize( providedOptions?: MediaPipeInitializeOptions ): void {
     assert && assert( !initialized );
     assert && assert( document.body, 'a document body is needed to attache imported scripts' );
     initialized = true;
@@ -133,6 +137,23 @@ class MediaPipe {
       minDetectionConfidence: 0.2,
       minTrackingConfidence: 0.2
     }, providedOptions );
+
+    ( async () => { // eslint-disable-line @typescript-eslint/no-floating-promises
+
+      // Populate the available video devices that MediaPipe can use, then select one to initiate the MediaPipe stream
+      if ( navigator.mediaDevices ) {
+        const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+        for ( let i = 0; i < mediaDevices.length; i++ ) {
+          const mediaDevice = mediaDevices[ i ];
+          if ( mediaDevice.kind === 'videoinput' ) {
+            MediaPipe.availableDevices.push( mediaDevice );
+          }
+        }
+      }
+      if ( MediaPipe.availableDevices.length > 0 ) {
+        MediaPipe.selectedDeviceProperty.value = MediaPipe.availableDevices[ 0 ].deviceId;
+      }
+    } )();
 
     const videoElement = document.createElement( 'video' );
     document.body.appendChild( videoElement );
@@ -225,7 +246,7 @@ class MediaPipe {
         }
       } );
 
-      options.mediaPipeOptionsObject.selectedDeviceProperty.link( deviceID => {
+      MediaPipe.selectedDeviceProperty.lazyLink( deviceID => {
         if ( videoElement.srcObject ) {
           MediaPipe.stopStream( videoElement );
         }
@@ -308,9 +329,9 @@ class MediaPipe {
     canvasContext.restore();
   }
 
-  public static getMediaPipeOptionsNode( mediaPipeOptions: MediaPipeOptions, supplementalContent?: Node ): Node {
+  public static getMediaPipeOptionsNode(): Node {
 
-    const deviceComboBoxItems = mediaPipeOptions.availableDevices.map( ( device, i ) => {
+    const deviceComboBoxItems = MediaPipe.availableDevices.map( ( device, i ) => {
       const label = device.label || `Camera ${i + 1}`;
       return {
         value: device.deviceId,
@@ -323,7 +344,7 @@ class MediaPipe {
     const content = new Node();
 
     // If there aren't mediaDevices available, be graceful
-    const deviceSelectorNode = mediaPipeOptions.availableDevices.length > 0 ? new ComboBox( mediaPipeOptions.selectedDeviceProperty, deviceComboBoxItems, content, {
+    const deviceSelectorNode = MediaPipe.availableDevices.length > 0 ? new ComboBox( MediaPipe.selectedDeviceProperty, deviceComboBoxItems, content, {
       labelNode: new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
       accessibleName: TangibleStrings.inputDeviceStringProperty,
       tandem: Tandem.OPT_OUT
@@ -343,11 +364,38 @@ class MediaPipe {
             description: TangibleStrings.cameraInputHandsHelpTextStringProperty
           } )
         }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
-        deviceSelectorNode
+        deviceSelectorNode,
+        new VBox( {
+          spacing: 5,
+          align: 'left',
+          children: [
+            new VoicingText( TangibleStrings.troubleshootingCameraInputHandsStringProperty, combineOptions<TextOptions>( {
+              tagName: 'h3',
+              accessibleName: TangibleStrings.troubleshootingCameraInputHandsStringProperty
+            }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
+            new Checkbox( MediaPipe.yAxisFlippedProperty,
+              new RichText( TangibleStrings.cameraInputFlipYStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
+                voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
+                voiceNameResponseOnSelection: false,
+                accessibleName: TangibleStrings.cameraInputFlipYStringProperty,
+                checkedContextResponse: TangibleStrings.a11y.cameraInputFlipYCheckedStringProperty,
+                uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
+                tandem: Tandem.OPT_OUT
+              } ),
+            new Checkbox( MediaPipe.xAxisFlippedProperty,
+              new RichText( TangibleStrings.cameraInputFlipXStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
+                voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
+                voiceNameResponseOnSelection: false,
+                accessibleName: TangibleStrings.cameraInputFlipXStringProperty,
+                checkedContextResponse: TangibleStrings.a11y.cameraInputFlipXCheckedStringProperty,
+                uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipXUncheckedStringProperty,
+                tandem: Tandem.OPT_OUT
+              } )
+          ]
+        } )
       ]
     } );
 
-    supplementalContent && vbox.addChild( supplementalContent );
     content.addChild( vbox );
     return content;
   }
