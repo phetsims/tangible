@@ -336,7 +336,7 @@ class MediaPipe {
       return {
         value: device.deviceId,
         node: new Text( label ),
-        a11yLabel: label
+        a11yName: label
       };
     } );
 
