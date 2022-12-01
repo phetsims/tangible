@@ -109,13 +109,13 @@ let failedOnFrame = false;
 let videoPlaying = false;
 
 class MediaPipe {
-  public static selectedDeviceProperty = new StringProperty( '' );
-  public static availableDevices: MediaDeviceInfo[] = [];
-  public static xAxisFlippedProperty = new BooleanProperty( false );
-  public static yAxisFlippedProperty = new BooleanProperty( false );
+  public static readonly selectedDeviceProperty = new StringProperty( '' );
+  public static readonly availableDevices: MediaDeviceInfo[] = [];
+  public static readonly xAxisFlippedProperty = new BooleanProperty( false );
+  public static readonly yAxisFlippedProperty = new BooleanProperty( false );
 
   // the most recent results from MediaPipe
-  public static resultsProperty = new Property<MediaPipeResults | null>( null, {
+  public static readonly resultsProperty = new Property<MediaPipeResults | null>( null, {
     phetioValueType: NullableIO( MediaPipeResultsIO ),
     tandem: Tandem.GLOBAL_VIEW.createTandem( 'mediaPipe' ).createTandem( 'resultsProperty' ),
     phetioDocumentation: 'A Property that holds the raw data coming from MediaPipe. Set to null if there are no hands detected.'
