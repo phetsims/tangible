@@ -172,17 +172,17 @@ class MediaPipe {
       document.body.appendChild( element );
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     assert && options.fromLocalDependency && assert( window.mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
 
-    // @ts-ignore
+    // @ts-expect-error
     const hands = new window.Hands( {
       locateFile: ( file: string ) => {
         if ( options.fromLocalDependency ) {
 
-          // @ts-ignore
+          // @ts-expect-error
           assert && assert( window.mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
-          // @ts-ignore
+          // @ts-expect-error
           return window.mediaPipeDependencies[ file ];
         }
         else {
@@ -202,7 +202,7 @@ class MediaPipe {
       }
     } );
 
-    // @ts-ignore
+    // @ts-expect-error
     if ( window.navigator.mediaDevices && window.navigator.mediaDevices.getUserMedia ) {
 
       // Don't send the same video time twice
