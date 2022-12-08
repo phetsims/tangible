@@ -111,7 +111,11 @@ let videoPlaying = false;
 class MediaPipe {
   public static readonly selectedDeviceProperty = new StringProperty( '' );
   public static readonly availableDevices: MediaDeviceInfo[] = [];
+
+  // Flip across the x axis, flipping y values
   public static readonly xAxisFlippedProperty = new BooleanProperty( false );
+
+  // Flip across the y axis, flipping x values
   public static readonly yAxisFlippedProperty = new BooleanProperty( false );
 
   // the most recent results from MediaPipe
