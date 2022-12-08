@@ -109,10 +109,14 @@ let failedOnFrame = false;
 let videoPlaying = false;
 
 class MediaPipe {
-  public static selectedDeviceProperty = new StringProperty( '' );
-  public static availableDevices: MediaDeviceInfo[] = [];
-  public static xAxisFlippedProperty = new BooleanProperty( false );
-  public static yAxisFlippedProperty = new BooleanProperty( false );
+  public static readonly selectedDeviceProperty = new StringProperty( '' );
+  public static readonly availableDevices: MediaDeviceInfo[] = [];
+
+  // Flip across the x axis, flipping y values
+  public static readonly xAxisFlippedProperty = new BooleanProperty( false );
+
+  // Flip across the y axis, flipping x values
+  public static readonly yAxisFlippedProperty = new BooleanProperty( false );
 
   // the most recent results from MediaPipe
   public static resultsProperty = new Property<MediaPipeResults | null>( null, {
