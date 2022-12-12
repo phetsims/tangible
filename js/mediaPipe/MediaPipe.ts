@@ -8,6 +8,7 @@
  */
 import tangible from '../tangible.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import OopsDialog from '../../../scenery-phet/js/OopsDialog.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
@@ -35,10 +36,17 @@ if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
 }
 
+type HandsType = {
+  setOptions( options: MediaPipeInitializeOptions ): void;
+  onResults( callback: ( results: MediaPipeResults ) => void ): void;
+  send( object: { image: HTMLVideoElement } ): Promise<void>;
+};
+
 // Allow accessing these off window. See https://stackoverflow.com/questions/12709074/how-do-you-explicitly-set-a-new-property-on-window-in-typescript
 declare global {
   interface Window { // eslint-disable-line @typescript-eslint/consistent-type-definitions
     mediaPipeDependencies: Record<string, string>;
+    Hands: { new( options: IntentionalAny ): HandsType };
   }
 }
 
@@ -185,7 +193,6 @@ class MediaPipe {
 
     assert && options.fromLocalDependency && assert( window.mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
 
-    // @ts-expect-error
     const hands = new window.Hands( {
       locateFile: ( file: string ) => {
         if ( options.fromLocalDependency ) {
