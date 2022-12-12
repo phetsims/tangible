@@ -35,6 +35,13 @@ if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
 }
 
+// Allow accessing these off window. See https://stackoverflow.com/questions/12709074/how-do-you-explicitly-set-a-new-property-on-window-in-typescript
+declare global {
+  interface Window { // eslint-disable-line @typescript-eslint/consistent-type-definitions
+    mediaPipeDependencies: Record<string, string>;
+  }
+}
+
 const CAMERA_IMAGE_RESOLUTION_FACTOR = MediaPipeQueryParameters.cameraImageResolutionFactor;
 
 export type HandPoint = {
@@ -176,7 +183,6 @@ class MediaPipe {
       document.body.appendChild( element );
     }
 
-    // @ts-expect-error
     assert && options.fromLocalDependency && assert( window.mediaPipeDependencies, 'mediaPipeDependencies expected to load mediaPipe' );
 
     // @ts-expect-error
@@ -184,9 +190,7 @@ class MediaPipe {
       locateFile: ( file: string ) => {
         if ( options.fromLocalDependency ) {
 
-          // @ts-expect-error
           assert && assert( window.mediaPipeDependencies.hasOwnProperty( file ), `file not in mediaPipeDependencies: ${file}` );
-          // @ts-expect-error
           return window.mediaPipeDependencies[ file ];
         }
         else {
@@ -206,7 +210,7 @@ class MediaPipe {
       }
     } );
 
-    // @ts-expect-error
+    // @ts-expect-error - nonstandard global on window.navigator
     if ( window.navigator.mediaDevices && window.navigator.mediaDevices.getUserMedia ) {
 
       // Don't send the same video time twice
