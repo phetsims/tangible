@@ -157,23 +157,6 @@ class MediaPipe {
       minTrackingConfidence: 0.2
     }, providedOptions );
 
-    ( async () => { // eslint-disable-line @typescript-eslint/no-floating-promises
-
-      // Populate the available video devices that MediaPipe can use, then select one to initiate the MediaPipe stream
-      if ( navigator.mediaDevices ) {
-        const mediaDevices = await navigator.mediaDevices.enumerateDevices();
-        for ( let i = 0; i < mediaDevices.length; i++ ) {
-          const mediaDevice = mediaDevices[ i ];
-          if ( mediaDevice.kind === 'videoinput' ) {
-            MediaPipe.availableDevices.push( mediaDevice );
-          }
-        }
-      }
-      if ( MediaPipe.availableDevices.length > 0 ) {
-        MediaPipe.selectedDeviceProperty.value = MediaPipe.availableDevices[ 0 ].deviceId;
-      }
-    } )();
-
     const videoElement = document.createElement( 'video' );
     document.body.appendChild( videoElement );
 
@@ -424,8 +407,26 @@ class MediaPipe {
     content.addChild( vbox );
     return content;
   }
-
 }
+
+// Kick this off immediately
+( async () => { // eslint-disable-line @typescript-eslint/no-floating-promises
+
+  // Populate the available video devices that MediaPipe can use, then select one to initiate the MediaPipe stream
+  if ( navigator.mediaDevices ) {
+    const mediaDevices = await navigator.mediaDevices.enumerateDevices();
+    for ( let i = 0; i < mediaDevices.length; i++ ) {
+      const mediaDevice = mediaDevices[ i ];
+      if ( mediaDevice.kind === 'videoinput' ) {
+        MediaPipe.availableDevices.push( mediaDevice );
+      }
+    }
+  }
+  if ( MediaPipe.availableDevices.length > 0 ) {
+    MediaPipe.selectedDeviceProperty.value = MediaPipe.availableDevices[ 0 ].deviceId;
+  }
+} )();
+
 
 tangible.register( 'MediaPipe', MediaPipe );
 export default MediaPipe;
