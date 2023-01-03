@@ -124,7 +124,10 @@ let failedOnFrame = false;
 let videoPlaying = false;
 
 class MediaPipe {
-  public static readonly selectedDeviceProperty = new StringProperty( '' );
+
+  // device id from the browser often will be and empty string (`''`), so make sure the default value is a unique string
+  // so that the initial Property notifications happen.
+  public static readonly selectedDeviceProperty = new StringProperty( 'DEFAULT_VALUE' );
   public static readonly availableDevices: MediaDeviceInfo[] = [];
 
   // Flip across the x axis, flipping y values
