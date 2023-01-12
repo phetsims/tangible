@@ -353,7 +353,7 @@ class MediaPipe {
       const label = device.label || `Camera ${i + 1}`;
       return {
         value: device.deviceId,
-        node: new Text( label ),
+        createNode: ( tandem: Tandem ) => new Text( label ),
         a11yName: label
       };
     } );
