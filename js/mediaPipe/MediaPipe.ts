@@ -19,7 +19,7 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { Node, RichText, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
+import { HBox, Node, RichText, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
@@ -363,7 +363,6 @@ class MediaPipe {
 
     // If there aren't mediaDevices available, be graceful
     const deviceSelectorNode = MediaPipe.availableDevices.length > 0 ? new ComboBox( MediaPipe.selectedDeviceProperty, deviceComboBoxItems, content, {
-      labelNode: new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
       accessibleName: TangibleStrings.inputDeviceStringProperty,
       tandem: Tandem.OPT_OUT
     } ) : new Node();
@@ -382,7 +381,13 @@ class MediaPipe {
             description: TangibleStrings.cameraInputHandsHelpTextStringProperty
           } )
         }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
-        deviceSelectorNode,
+        new HBox( {
+          spacing: 10,
+          children: [
+            new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+            deviceSelectorNode
+          ]
+        } ),
         new VBox( {
           spacing: 5,
           align: 'left',
