@@ -31,6 +31,7 @@ import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -135,6 +136,8 @@ class MediaPipe {
 
   // Flip across the y axis, flipping x values
   public static readonly yAxisFlippedProperty = new BooleanProperty( false );
+
+  public static readonly videoStreamDimension2 = new Dimension2( 1280, 720 );
 
   // the most recent results from MediaPipe
   public static readonly resultsProperty = new Property<MediaPipeResults | null>( null, {
@@ -294,8 +297,8 @@ class MediaPipe {
     const constraints = {
       video: {
         facingMode: 'user',
-        width: 1280,
-        height: 720,
+        width: MediaPipe.videoStreamDimension2.width,
+        height: MediaPipe.videoStreamDimension2.height,
         deviceId: ( deviceID && deviceID !== '' ) ? { exact: deviceID } : undefined
       }
     };
