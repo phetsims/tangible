@@ -367,6 +367,7 @@ class MediaPipe {
     // If there aren't mediaDevices available, be graceful
     const deviceSelectorNode = MediaPipe.availableDevices.length > 0 ? new ComboBox( MediaPipe.selectedDeviceProperty, deviceComboBoxItems, content, {
       accessibleName: TangibleStrings.inputDeviceStringProperty,
+      comboBoxVoicingNameResponsePattern: TangibleStrings.a11y.inputDeviceNameResponsePatternStringProperty,
       tandem: Tandem.OPT_OUT
     } ) : new Node();
 

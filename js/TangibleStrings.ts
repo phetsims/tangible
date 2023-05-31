@@ -30,6 +30,7 @@ type StringsType = {
     'cameraInputFlipXUncheckedStringProperty': LinkableProperty<string>;
     'cameraInputFlipYCheckedStringProperty': LinkableProperty<string>;
     'cameraInputFlipYUncheckedStringProperty': LinkableProperty<string>;
+    'inputDeviceNameResponsePatternStringProperty': LinkableProperty<string>;
   }
 };
 

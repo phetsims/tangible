@@ -53,6 +53,9 @@
     },
     "cameraInputFlipYUnchecked": {
       "value": "Y-axis for camera not flipped."
+    },
+    "inputDeviceNameResponsePattern": {
+      "value": "Input Device: {{value}}"
     }
   }
 }
