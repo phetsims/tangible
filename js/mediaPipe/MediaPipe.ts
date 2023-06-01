@@ -19,7 +19,7 @@ import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
-import { HBox, Node, RichText, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
+import { HBox, Node, RichText, RichTextOptions, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import ComboBox from '../../../sun/js/ComboBox.js';
@@ -83,6 +83,25 @@ type MediaPipeInitializeOptions = {
   // it to a higher value can increase robustness of the solution, at the expense of a higher latency. Ignored if
   // static_image_mode is true, where hand detection simply runs on every image. Default to 0.5. https://google.github.io/mediapipe/solutions/hands#min_tracking_confidence
   minTrackingConfidence?: number;
+};
+
+// Options for the content created by getMediaPipeOptionsNode, to be displayed in a Preferences dialog.
+export type MediaPipeOptionsNodeOptions = {
+
+  // A custom string that describes the Camera Input: Hands feature.
+  featureDescriptionString?: string | TReadOnlyProperty<string>;
+
+  // A custom string that describes in detail how to troubleshoot the input
+  troubleshootingDescriptionString?: string | TReadOnlyProperty<string>;
+
+  // A custom string that describes what happens when flipping the Y axis of the camera input.
+  flipYAxisDescriptionString?: string | TReadOnlyProperty<string>;
+
+  // A custom string that describes what happens when flipping the X axis of the camera input.
+  flipXAxisDescriptionString?: string | TReadOnlyProperty<string>;
+
+  // Options applied to all RichText Nodes in the content.
+  labelTextOptions?: RichTextOptions;
 };
 
 // 21 points, in order, corresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
@@ -350,7 +369,15 @@ class MediaPipe {
     canvasContext.restore();
   }
 
-  public static getMediaPipeOptionsNode(): Node {
+  public static getMediaPipeOptionsNode( providedOptions?: MediaPipeOptionsNodeOptions ): Node {
+
+    const options = optionize<MediaPipeOptionsNodeOptions>()( {
+      featureDescriptionString: TangibleStrings.cameraInputHandsHelpTextStringProperty,
+      troubleshootingDescriptionString: TangibleStrings.troubleshootingParagraphStringProperty,
+      flipYAxisDescriptionString: TangibleStrings.cameraInputFlipYStringProperty,
+      flipXAxisDescriptionString: TangibleStrings.cameraInputFlipXStringProperty,
+      labelTextOptions: {}
+    }, providedOptions );
 
     const deviceComboBoxItems = MediaPipe.availableDevices.map( ( device, i ) => {
       const label = device.label || `Camera ${i + 1}`;
@@ -379,12 +406,12 @@ class MediaPipe {
           tagName: 'h3',
           accessibleName: TangibleStrings.cameraInputHandsStringProperty
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
-        new VoicingText( TangibleStrings.cameraInputHandsHelpTextStringProperty, combineOptions<VoicingTextOptions>( {
+        new VoicingRichText( options.featureDescriptionString, combineOptions<VoicingTextOptions>( {
           readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPatternStringProperty, {
             label: TangibleStrings.cameraInputHandsStringProperty,
-            description: TangibleStrings.cameraInputHandsHelpTextStringProperty
+            description: options.featureDescriptionString
           } )
-        }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
+        }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
         new HBox( {
           spacing: 10,
           children: [
@@ -401,14 +428,14 @@ class MediaPipe {
               tagName: 'h3',
               accessibleName: TangibleStrings.troubleshootingCameraInputHandsStringProperty
             }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
-            new VoicingRichText( TangibleStrings.troubleshootingParagraphStringProperty, combineOptions<VoicingRichTextOptions>( {
+            new VoicingRichText( options.troubleshootingDescriptionString, combineOptions<VoicingRichTextOptions>( {
               lineWrap: PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS.maxWidth
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
-            new VoicingText( TangibleStrings.cameraInputFlipYHeadingStringProperty, combineOptions<VoicingTextOptions>( {
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
+            new VoicingText( options.flipYAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 15 }
             }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
             new Checkbox( MediaPipe.yAxisFlippedProperty,
-              new RichText( TangibleStrings.cameraInputFlipYStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
+              new RichText( TangibleStrings.cameraInputFlipYStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
                 voiceNameResponseOnSelection: false,
                 accessibleName: TangibleStrings.cameraInputFlipYStringProperty,
@@ -416,11 +443,11 @@ class MediaPipe {
                 uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
                 tandem: Tandem.OPT_OUT
               } ),
-            new VoicingText( TangibleStrings.cameraInputFlipXHeadingStringProperty, combineOptions<VoicingTextOptions>( {
+            new VoicingText( options.flipXAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 10 }
             }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
             new Checkbox( MediaPipe.xAxisFlippedProperty,
-              new RichText( TangibleStrings.cameraInputFlipXStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ), {
+              new RichText( TangibleStrings.cameraInputFlipXStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
                 voiceNameResponseOnSelection: false,
                 accessibleName: TangibleStrings.cameraInputFlipXStringProperty,
