@@ -374,8 +374,8 @@ class MediaPipe {
     const options = optionize<MediaPipeOptionsNodeOptions>()( {
       featureDescriptionString: TangibleStrings.cameraInputHandsHelpTextStringProperty,
       troubleshootingDescriptionString: TangibleStrings.troubleshootingParagraphStringProperty,
-      flipYAxisDescriptionString: TangibleStrings.cameraInputFlipYStringProperty,
-      flipXAxisDescriptionString: TangibleStrings.cameraInputFlipXStringProperty,
+      flipYAxisDescriptionString: TangibleStrings.cameraInputFlipYHeadingStringProperty,
+      flipXAxisDescriptionString: TangibleStrings.cameraInputFlipXHeadingStringProperty,
       labelTextOptions: {}
     }, providedOptions );
 
