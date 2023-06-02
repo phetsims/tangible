@@ -438,6 +438,7 @@ class MediaPipe {
               new RichText( TangibleStrings.cameraInputFlipYStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
                 voiceNameResponseOnSelection: false,
+                voicingIgnoreVoicingManagerProperties: true,
                 accessibleName: TangibleStrings.cameraInputFlipYStringProperty,
                 checkedContextResponse: TangibleStrings.a11y.cameraInputFlipYCheckedStringProperty,
                 uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
@@ -450,6 +451,7 @@ class MediaPipe {
               new RichText( TangibleStrings.cameraInputFlipXStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
                 voiceNameResponseOnSelection: false,
+                voicingIgnoreVoicingManagerProperties: true,
                 accessibleName: TangibleStrings.cameraInputFlipXStringProperty,
                 checkedContextResponse: TangibleStrings.a11y.cameraInputFlipXCheckedStringProperty,
                 uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipXUncheckedStringProperty,
