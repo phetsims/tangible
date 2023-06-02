@@ -433,7 +433,7 @@ class MediaPipe {
             }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new VoicingText( options.flipYAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 15 }
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new Checkbox( MediaPipe.yAxisFlippedProperty,
               new RichText( TangibleStrings.cameraInputFlipYStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
@@ -446,7 +446,7 @@ class MediaPipe {
               } ),
             new VoicingText( options.flipXAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 10 }
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ) ),
+            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new Checkbox( MediaPipe.xAxisFlippedProperty,
               new RichText( TangibleStrings.cameraInputFlipXStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
