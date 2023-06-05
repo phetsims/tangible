@@ -102,6 +102,9 @@ export type MediaPipeOptionsNodeOptions = {
 
   // Options applied to all RichText Nodes in the content.
   labelTextOptions?: RichTextOptions;
+
+  // Visibility of the troubleshooting controls - controls to flip the camera.
+  troubleshootingControlsVisible?: boolean;
 };
 
 // 21 points, in order, corresponding to hand landmark positions, see https://google.github.io/mediapipe/solutions/hands.html#hand-landmark-model
@@ -376,6 +379,7 @@ class MediaPipe {
       troubleshootingDescriptionString: TangibleStrings.troubleshootingParagraphStringProperty,
       flipYAxisDescriptionString: TangibleStrings.cameraInputFlipYHeadingStringProperty,
       flipXAxisDescriptionString: TangibleStrings.cameraInputFlipXHeadingStringProperty,
+      troubleshootingControlsVisible: true,
       labelTextOptions: {}
     }, providedOptions );
 
@@ -423,6 +427,7 @@ class MediaPipe {
           spacing: 5,
           align: 'left',
           layoutOptions: { topMargin: 10 },
+          visible: options.troubleshootingControlsVisible,
           children: [
             new VoicingText( TangibleStrings.troubleshootingCameraInputHandsStringProperty, combineOptions<TextOptions>( {
               tagName: 'h3',
