@@ -32,6 +32,7 @@ import StringProperty from '../../../axon/js/StringProperty.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Checkbox from '../../../sun/js/Checkbox.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
@@ -342,7 +343,7 @@ class MediaPipe {
   }
 
   // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
-  private static showOopsDialog( messageStringProperty: TReadOnlyProperty<string> ): void {
+  private static showOopsDialog( messageStringProperty: ReadOnlyProperty<string> ): void {
 
     // Waiting for next step ensures we will have a sim to append to the Dialog to.
     stepTimer.runOnNextTick( () => {
