@@ -342,11 +342,11 @@ class MediaPipe {
   }
 
   // Display a dialog indicating that the MediaPipe feature is not going to work because it requires internet access.
-  private static showOopsDialog( message: TReadOnlyProperty<string> ): void {
+  private static showOopsDialog( messageStringProperty: TReadOnlyProperty<string> ): void {
 
     // Waiting for next step ensures we will have a sim to append to the Dialog to.
     stepTimer.runOnNextTick( () => {
-      const offlineDialog = new OopsDialog( message, {
+      const offlineDialog = new OopsDialog( messageStringProperty, {
         closeButtonListener: () => {
           offlineDialog.hide();
           offlineDialog.dispose();
