@@ -9,8 +9,7 @@ https://phet.colorado.edu/
 ## Documentation
 
 This library is set up make available different computer vision, bluetooth, and plugin technologies for use as control
-to
-PhET Simulations.
+to PhET Simulations.
 
 ## MediaPipe Hands
 
