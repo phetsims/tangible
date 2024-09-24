@@ -20,18 +20,6 @@
     "extends": "../chipper/eslint/sim_eslintrc.js",
     "globals": {
       "mediaPipeDependencies": "readonly"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts"
-        ],
-        "parserOptions": {
-          "project": [
-            "../chipper/tsconfig/eslint-all/tsconfig.json"
-          ]
-        }
-      }
-    ]
+    }
   }
 }
