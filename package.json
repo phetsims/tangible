@@ -15,11 +15,5 @@
     "simFeatures": {
       "supportsDynamicLocale": true
     }
-  },
-  "eslintConfig": {
-    "extends": "../chipper/eslint/sim_eslintrc.js",
-    "globals": {
-      "mediaPipeDependencies": "readonly"
-    }
   }
 }
