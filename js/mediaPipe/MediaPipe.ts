@@ -389,7 +389,7 @@ class MediaPipe {
       return {
         value: device.deviceId,
         createNode: ( tandem: Tandem ) => new Text( label ),
-        a11yName: label
+        accessibleName: label
       };
     } );
 
