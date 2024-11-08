@@ -280,11 +280,15 @@ class MediaPipe {
           try {
             handsSending = true;
             await hands.send( { image: videoElement } );
+
+            // eslint-disable-next-line require-atomic-updates
             handsSending = false;
           }
           catch( e ) {
             console.error( 'Internet trouble:', e );
             MediaPipe.showOopsDialog( TangibleStrings.cameraInputRequiresInternetStringProperty );
+
+            // eslint-disable-next-line require-atomic-updates
             failedOnFrame = true;
           }
         }
