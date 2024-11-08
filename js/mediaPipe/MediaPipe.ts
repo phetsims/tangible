@@ -1,5 +1,28 @@
 // Copyright 2022-2024, University of Colorado Boulder
 
+import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
+import BooleanProperty from '../../../axon/js/BooleanProperty.js';
+import Property from '../../../axon/js/Property.js';
+import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import stepTimer from '../../../axon/js/stepTimer.js';
+import StringProperty from '../../../axon/js/StringProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import Dimension2 from '../../../dot/js/Dimension2.js';
+import JoistStrings from '../../../joist/js/JoistStrings.js';
+import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
+import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
+import OopsDialog from '../../../scenery-phet/js/OopsDialog.js';
+import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import { HBox, Node, RichText, RichTextOptions, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
+import Checkbox from '../../../sun/js/Checkbox.js';
+import ComboBox from '../../../sun/js/ComboBox.js';
+import Tandem from '../../../tandem/js/Tandem.js';
+import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
+import IOType from '../../../tandem/js/types/IOType.js';
+import NullableIO from '../../../tandem/js/types/NullableIO.js';
+import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
 /**
  * Adds the boilerplate needed for MediaPipe "hands" implementation to run in PhET Sims. See https://github.com/phetsims/ratio-and-proportion/issues/431
  * See https://google.github.io/mediapipe/solutions/hands.html
@@ -7,32 +30,9 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 import tangible from '../tangible.js';
-import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
-import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
-import OopsDialog from '../../../scenery-phet/js/OopsDialog.js';
-import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
-import IOType from '../../../tandem/js/types/IOType.js';
-import Property from '../../../axon/js/Property.js';
-import MediaPipeQueryParameters from './MediaPipeQueryParameters.js';
-import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
-import Tandem from '../../../tandem/js/Tandem.js';
-import NullableIO from '../../../tandem/js/types/NullableIO.js';
-import stepTimer from '../../../axon/js/stepTimer.js';
-import { HBox, Node, RichText, RichTextOptions, Text, TextOptions, VBox, VoicingRichText, VoicingRichTextOptions, VoicingText, VoicingTextOptions } from '../../../scenery/js/imports.js';
-import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
-import ComboBox from '../../../sun/js/ComboBox.js';
 import TangibleStrings from '../TangibleStrings.js';
-import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
-import JoistStrings from '../../../joist/js/JoistStrings.js';
-import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import StringProperty from '../../../axon/js/StringProperty.js';
-import BooleanProperty from '../../../axon/js/BooleanProperty.js';
-import Checkbox from '../../../sun/js/Checkbox.js';
-import Dimension2 from '../../../dot/js/Dimension2.js';
-import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
+import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
+import MediaPipeQueryParameters from './MediaPipeQueryParameters.js';
 
 if ( MediaPipeQueryParameters.showVideo ) {
   assert && assert( MediaPipeQueryParameters.cameraInput === 'hands', '?showVideo is expected to accompany ?cameraInput=hands and its features' );
