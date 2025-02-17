@@ -422,7 +422,7 @@ class MediaPipe {
           accessibleName: TangibleStrings.cameraInputHandsStringProperty
         }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
         new VoicingRichText( options.featureDescriptionString, combineOptions<VoicingTextOptions>( {
-          readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPatternStringProperty, {
+          readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.translatable.preferences.tabs.labelledDescriptionPatternStringProperty, {
             label: TangibleStrings.cameraInputHandsStringProperty,
             description: options.featureDescriptionString
           } )
