@@ -9,7 +9,7 @@ import StringProperty from '../../../axon/js/StringProperty.js';
 import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import JoistStrings from '../../../joist/js/JoistStrings.js';
-import PreferencesDialog from '../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { combineOptions } from '../../../phet-core/js/optionize.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 import StringUtils from '../../../phetcommon/js/util/StringUtils.js';
@@ -420,17 +420,17 @@ class MediaPipe {
         new Text( TangibleStrings.cameraInputHandsStringProperty, combineOptions<TextOptions>( {
           tagName: 'h3',
           accessibleName: TangibleStrings.cameraInputHandsStringProperty
-        }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
+        }, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ) ),
         new VoicingRichText( options.featureDescriptionString, combineOptions<VoicingTextOptions>( {
           readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.translatable.preferences.tabs.labelledDescriptionPatternStringProperty, {
             label: TangibleStrings.cameraInputHandsStringProperty,
             description: options.featureDescriptionString
           } )
-        }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
+        }, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
         new HBox( {
           spacing: 10,
           children: [
-            new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS ),
+            new Text( TangibleStrings.inputDeviceStringProperty, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS ),
             deviceSelectorNode
           ]
         } ),
@@ -443,15 +443,15 @@ class MediaPipe {
             new VoicingText( TangibleStrings.troubleshootingCameraInputHandsStringProperty, combineOptions<TextOptions>( {
               tagName: 'h3',
               accessibleName: TangibleStrings.troubleshootingCameraInputHandsStringProperty
-            }, PreferencesDialog.PANEL_SECTION_LABEL_OPTIONS ) ),
+            }, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ) ),
             new VoicingRichText( options.troubleshootingDescriptionString, combineOptions<VoicingRichTextOptions>( {
-              lineWrap: PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS.maxWidth
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
+              lineWrap: PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS.maxWidth
+            }, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new VoicingText( options.flipYAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 15 }
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
+            }, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new Checkbox( MediaPipe.yAxisFlippedProperty,
-              new RichText( TangibleStrings.cameraInputFlipYStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
+              new RichText( TangibleStrings.cameraInputFlipYStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipYStringProperty,
                 voiceNameResponseOnSelection: false,
                 voicingIgnoreVoicingManagerProperties: true,
@@ -462,9 +462,9 @@ class MediaPipe {
               } ),
             new VoicingText( options.flipXAxisDescriptionString, combineOptions<VoicingTextOptions>( {
               layoutOptions: { topMargin: 10 }
-            }, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
+            }, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ),
             new Checkbox( MediaPipe.xAxisFlippedProperty,
-              new RichText( TangibleStrings.cameraInputFlipXStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialog.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
+              new RichText( TangibleStrings.cameraInputFlipXStringProperty, combineOptions<RichTextOptions>( {}, PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS, options.labelTextOptions ) ), {
                 voicingNameResponse: TangibleStrings.cameraInputFlipXStringProperty,
                 voiceNameResponseOnSelection: false,
                 voicingIgnoreVoicingManagerProperties: true,
