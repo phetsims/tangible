@@ -5,6 +5,7 @@
  */
 
 import platform from '../../../phet-core/js/platform.js';
+import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
 import tangible from '../tangible.js';
 
 const MediaPipeQueryParameters = QueryStringMachine.getAll( {
