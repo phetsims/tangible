@@ -131,7 +131,7 @@ export type MediaPipeResults = {
   multiHandedness: HandednessData[];
 };
 
-const MediaPipeResultsIO = new IOType( 'MediaPipeResultsIO', {
+const MediaPipeResultsIO = new IOType<IntentionalAny, IntentionalAny>( 'MediaPipeResultsIO', {
   isValidValue: () => true,
   toStateObject: ( mediaPipeResults: MediaPipeResults ) => {
     return {
