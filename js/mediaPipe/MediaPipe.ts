@@ -418,8 +418,7 @@ class MediaPipe {
       align: 'left',
       children: [
         new Text( TangibleStrings.cameraInputHandsStringProperty, combineOptions<TextOptions>( {
-          tagName: 'h3',
-          accessibleName: TangibleStrings.cameraInputHandsStringProperty
+          accessibleHeading: TangibleStrings.cameraInputHandsStringProperty
         }, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ) ),
         new VoicingRichText( options.featureDescriptionString, combineOptions<VoicingTextOptions>( {
           readingBlockNameResponse: StringUtils.fillIn( JoistStrings.a11y.preferences.tabs.labelledDescriptionPatternStringProperty, {
@@ -441,8 +440,7 @@ class MediaPipe {
           visible: options.troubleshootingControlsVisible,
           children: [
             new VoicingText( TangibleStrings.troubleshootingCameraInputHandsStringProperty, combineOptions<TextOptions>( {
-              tagName: 'h3',
-              accessibleName: TangibleStrings.troubleshootingCameraInputHandsStringProperty
+              accessibleHeading: TangibleStrings.troubleshootingCameraInputHandsStringProperty
             }, PreferencesDialogConstants.PANEL_SECTION_LABEL_OPTIONS ) ),
             new VoicingRichText( options.troubleshootingDescriptionString, combineOptions<VoicingRichTextOptions>( {
               lineWrap: PreferencesDialogConstants.PANEL_SECTION_CONTENT_OPTIONS.maxWidth
