@@ -1,5 +1,11 @@
 // Copyright 2022-2025, University of Colorado Boulder
 
+/**
+ * Adds the boilerplate needed for MediaPipe "hands" implementation to run in PhET Sims. See https://github.com/phetsims/ratio-and-proportion/issues/431
+ * See https://google.github.io/mediapipe/solutions/hands.html
+ *
+ * @author Michael Kauzmann (PhET Interactive Simulations)
+ */
 import animationFrameTimer from '../../../axon/js/animationFrameTimer.js';
 import BooleanProperty from '../../../axon/js/BooleanProperty.js';
 import Property from '../../../axon/js/Property.js';
@@ -29,12 +35,6 @@ import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
-/**
- * Adds the boilerplate needed for MediaPipe "hands" implementation to run in PhET Sims. See https://github.com/phetsims/ratio-and-proportion/issues/431
- * See https://google.github.io/mediapipe/solutions/hands.html
- *
- * @author Michael Kauzmann (PhET Interactive Simulations)
- */
 import tangible from '../tangible.js';
 import TangibleStrings from '../TangibleStrings.js';
 import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
