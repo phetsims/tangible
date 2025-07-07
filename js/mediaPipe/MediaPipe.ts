@@ -454,8 +454,8 @@ class MediaPipe {
                 voiceNameResponseOnSelection: false,
                 voicingIgnoreVoicingManagerProperties: true,
                 accessibleName: TangibleStrings.cameraInputFlipYStringProperty,
-                checkedContextResponse: TangibleStrings.a11y.cameraInputFlipYCheckedStringProperty,
-                uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
+                accessibleContextResponseChecked: TangibleStrings.a11y.cameraInputFlipYCheckedStringProperty,
+                accessibleContextResponseUnchecked: TangibleStrings.a11y.cameraInputFlipYUncheckedStringProperty,
                 tandem: Tandem.OPT_OUT
               } ),
             new VoicingText( options.flipXAxisDescriptionString, combineOptions<VoicingTextOptions>( {
@@ -467,8 +467,8 @@ class MediaPipe {
                 voiceNameResponseOnSelection: false,
                 voicingIgnoreVoicingManagerProperties: true,
                 accessibleName: TangibleStrings.cameraInputFlipXStringProperty,
-                checkedContextResponse: TangibleStrings.a11y.cameraInputFlipXCheckedStringProperty,
-                uncheckedContextResponse: TangibleStrings.a11y.cameraInputFlipXUncheckedStringProperty,
+                accessibleContextResponseChecked: TangibleStrings.a11y.cameraInputFlipXCheckedStringProperty,
+                accessibleContextResponseUnchecked: TangibleStrings.a11y.cameraInputFlipXUncheckedStringProperty,
                 tandem: Tandem.OPT_OUT
               } )
           ]
