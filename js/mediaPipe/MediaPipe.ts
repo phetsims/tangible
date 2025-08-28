@@ -12,7 +12,7 @@ import Property from '../../../axon/js/Property.js';
 import ReadOnlyProperty from '../../../axon/js/ReadOnlyProperty.js';
 import stepTimer from '../../../axon/js/stepTimer.js';
 import StringProperty from '../../../axon/js/StringProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../dot/js/Dimension2.js';
 import JoistStrings from '../../../joist/js/JoistStrings.js';
 import PreferencesDialogConstants from '../../../joist/js/preferences/PreferencesDialogConstants.js';
