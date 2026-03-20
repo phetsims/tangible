@@ -35,7 +35,6 @@ import ArrayIO from '../../../tandem/js/types/ArrayIO.js';
 import IOType from '../../../tandem/js/types/IOType.js';
 import NullableIO from '../../../tandem/js/types/NullableIO.js';
 import ObjectLiteralIO from '../../../tandem/js/types/ObjectLiteralIO.js';
-import tangible from '../tangible.js';
 import TangibleStrings from '../TangibleStrings.js';
 import draggableResizableHTMLElement from './draggableResizableHTMLElement.js';
 import MediaPipeQueryParameters from './MediaPipeQueryParameters.js';
@@ -482,5 +481,4 @@ class MediaPipe {
 
 }
 
-tangible.register( 'MediaPipe', MediaPipe );
 export default MediaPipe;

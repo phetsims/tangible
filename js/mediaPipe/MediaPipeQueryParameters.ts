@@ -6,7 +6,6 @@
 
 import platform from '../../../phet-core/js/platform.js';
 import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
-import tangible from '../tangible.js';
 
 const MediaPipeQueryParameters = QueryStringMachine.getAll( {
 
@@ -38,7 +37,5 @@ const MediaPipeQueryParameters = QueryStringMachine.getAll( {
     defaultValue: platform.mobileSafari ? 0.2 : 0.5
   }
 } );
-
-tangible.register( 'MediaPipeQueryParameters', MediaPipeQueryParameters );
 
 export default MediaPipeQueryParameters;

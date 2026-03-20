@@ -6,8 +6,6 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import tangible from '../tangible.js';
-
 const CAPTURE = { capture: true };
 
 const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
@@ -227,5 +225,4 @@ const draggableResizableElement = ( htmlElement: HTMLElement ): HTMLElement => {
 };
 
 
-tangible.register( 'draggableResizableElement', draggableResizableElement );
 export default draggableResizableElement;
