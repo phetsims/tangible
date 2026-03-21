@@ -39,4 +39,6 @@ type StringsType = {
 
 const TangibleStrings = getStringModule( 'TANGIBLE' ) as StringsType;
 
+tangible.register( 'TangibleStrings', TangibleStrings );
+
 export default TangibleStrings;
